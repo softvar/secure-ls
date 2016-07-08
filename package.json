@@ -20,6 +20,8 @@
     "eslint-loader": "1.1.0",
     "mocha": "2.3.4",
     "mock-local-storage": "^1.0.2",
+    "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0",
     "webpack": "1.12.9",
     "yargs": "3.32.0"
   },
