@@ -6,7 +6,7 @@ import Base64 from './Base64';
 import LZString from 'lz-string/libs/lz-string';
 import AES from 'crypto-js/aes';
 import DES from 'crypto-js/tripledes';
-import Rabbit from 'crypto-js/rabbit';
+import RABBIT from 'crypto-js/rabbit';
 import RC4 from 'crypto-js/rc4';
 
 export default class Library {
@@ -19,7 +19,7 @@ export default class Library {
     this.LZString = LZString;
     this.AES = AES;
     this.DES = DES;
-    this.Rabbit = Rabbit;
+    this.RABBIT = RABBIT;
     this.RC4 = RC4;
     this.enc = enc;
 
@@ -31,7 +31,7 @@ export default class Library {
       config.isCompression :
       true;
     this.config.encodingType = (typeof config.encodingType !== 'undefined' || config.encodingType === '') ?
-      config.encodingType :
+      config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
 
     this.ls = localStorage;
@@ -116,7 +116,7 @@ export default class Library {
       } else if (this._isDES) {
         bytes = DES.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isRabbit) {
-        bytes = Rabbit.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
+        bytes = RABBIT.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isRC4) {
         bytes = RC4.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       }
@@ -228,7 +228,7 @@ export default class Library {
       } else if (this._isDES) {
         encodedData = DES.encrypt(jsonData, this.utils.encryptionSecret);
       } else if (this._isRabbit) {
-        encodedData = Rabbit.encrypt(jsonData, this.utils.encryptionSecret);
+        encodedData = RABBIT.encrypt(jsonData, this.utils.encryptionSecret);
       } else if (this._isRC4) {
         encodedData = RC4.encrypt(jsonData, this.utils.encryptionSecret);
       }
