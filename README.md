@@ -2,11 +2,11 @@
 
 Secure localStorage data with high level of encryption and data compression.
 
-[![npm version](https://badge.fury.io/js/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls)
+[![npm version](https://badge.fury.io/js/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls)
 
 ## Features
 
-* Secure data with various types of encryption types including AES, DES, Rabbit and RC4. (defaults to `Base64` encoding).
+* Secure data with various types of encryption including `AES`, `DES`, `Rabbit` and `RC4`. (defaults to `Base64` encoding).
 * Compress data before storing it to `localStorage` to save extra bytes (defaults to `true`).
 * Advanced API wrapper over `localStorage` API, providing other basic utilities.
 * Save data in multiple keys inside `localStorage` and `secure-ls` will always remember it's creation.
@@ -228,6 +228,14 @@ ES6 source files
   in umd format
 ```
 
-## License
+## Copyright and license
 
-Copyright (c) 2016 Varun Malhotra Licensed under the [MIT license](https://opensource.org/licenses/MIT).
+>The [MIT license](https://opensource.org/licenses/MIT) (MIT)
+>
+>Copyright (c) 2015-2016 Varun Malhotra
+>
+>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
+>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
