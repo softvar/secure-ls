@@ -7,9 +7,8 @@ install:
   - npm install
   - npm run build-dev
   - npm run build
-  - npm run build-test
 script:
-  - npm run test
+  - npm run build-test
 cache:
   directories:
     - node_modules
