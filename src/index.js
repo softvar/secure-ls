@@ -9,10 +9,10 @@ import DES from 'crypto-js/tripledes';
 import RABBIT from 'crypto-js/rabbit';
 import RC4 from 'crypto-js/rc4';
 
-export default class Library {
+export default class SecureLS {
   constructor(config) {
     config = config || {};
-    this._name = 'my-library';
+    this._name = 'secure-ls';
     this.utils = utils;
     this.constants = constants;
     this.Base64 = Base64;
@@ -71,12 +71,12 @@ export default class Library {
   };
 
   _isRabbitEncryptionType() {
-    return AES &&
+    return RABBIT &&
       (this.config.encodingType === this.constants.EncrytionTypes.RABBIT);
   };
 
   _isRC4EncryptionType() {
-    return AES &&
+    return RC4 &&
       (this.config.encodingType === this.constants.EncrytionTypes.RC4);
   };
 

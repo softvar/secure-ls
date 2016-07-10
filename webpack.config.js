@@ -3,7 +3,7 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var path = require('path');
 var env = require('yargs').argv.mode;
 
-var libraryName = 'library';
+var libraryName = 'secure-ls';
 
 var plugins = [], outputFile;
 
@@ -20,7 +20,7 @@ var config = {
   output: {
     path: __dirname + '/dist',
     filename: outputFile,
-    library: libraryName,
+    library: 'SecureLS',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
@@ -37,6 +37,10 @@ var config = {
         exclude: /node_modules/
       }
     ]
+  },
+  eslint: {
+    failOnWarning: false,
+    failOnError: false
   },
   resolve: {
     root: path.resolve('./src'),
