@@ -1,6 +1,6 @@
 var key = 'rabbit__uncompressed';
 var data = {data: [{age: 1}, {age: '2'}]};
-var rabbit_u = new library({encodingType: 'rabbit', isCompression: false});
+var rabbit_u = new SecureLS({encodingType: 'rabbit', isCompression: false});
 ae = rabbit_u.RABBIT.encrypt(JSON.stringify(data), 's3cr3t@123');
 bde = rabbit_u.RABBIT.decrypt(ae.toString(), 's3cr3t@123');
 de = bde.toString(rabbit_u.enc._Utf8);

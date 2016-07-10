@@ -1,6 +1,6 @@
 var key = 'aes__uncompressed';
 var data = {data: [{age: 1}, {age: '2'}]};
-var aes_u = new library({encodingType: 'aes', isCompression: false});
+var aes_u = new SecureLS({encodingType: 'aes', isCompression: false});
 ae = aes_u.AES.encrypt(JSON.stringify(data), 's3cr3t@123');
 bde = aes_u.AES.decrypt(ae.toString(), 's3cr3t@123');
 de = bde.toString(aes_u.enc._Utf8);
