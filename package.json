@@ -2,7 +2,7 @@
   "name": "secure-ls",
   "version": "0.1.0",
   "description": "Secure (compressed) localStorage data with high level encryption",
-  "main": "dist/library.js",
+  "main": "dist/secure-ls.js",
   "scripts": {
     "build": "webpack --mode=build",
     "dev": "webpack --progress --colors --watch --mode=dev",
