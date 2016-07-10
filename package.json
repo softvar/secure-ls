@@ -5,6 +5,7 @@
   "main": "dist/secure-ls.js",
   "scripts": {
     "build": "webpack --mode=build",
+    "build-dev": "webpack --mode=dev",
     "dev": "webpack --progress --colors --watch --mode=dev",
     "test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },

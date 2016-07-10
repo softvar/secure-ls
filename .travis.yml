@@ -5,7 +5,7 @@ before_install:
   - npm install -g webpack
 install:
   - npm install
-  - npm run dev
+  - npm run build-dev
   - npm run build
 script:
   - npm run test
