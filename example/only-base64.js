@@ -6,5 +6,7 @@ bde = o_b.AES.decrypt(ae.toString(), 's3cr3t@123');
 de = bde.toString(o_b.enc._Utf8);
 
 o_b.set(key, data);
+console.log('Only Base64, no compression');
+console.log(localStorage.getItem(key));
 console.log(o_b.get(key));
 console.log('____________________________________')

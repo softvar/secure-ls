@@ -6,5 +6,8 @@ bde = a.AES.decrypt(ae.toString(), 's3cr3t@123');
 de = bde.toString(a.enc._Utf8);
 
 a.set(key, data);
+console.log('____________________________________');
+console.log('Standard Case: no compression, no encryption / encoding');
+console.log(localStorage.getItem(key));
 console.log(a.get(key));
-console.log('____________________________________')
+console.log('____________________________________');
