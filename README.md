@@ -231,6 +231,10 @@ var ls = new SecureLS({encodingType: 'rc4', isCompression: false, encryptionSecr
     ls.getAllKeys()
   ```
 
+## Screenshot
+
+<img src="screenshot.png">
+
 ## Scripts
 
 * `npm run build` - produces production version of the library under the `dist` folder
