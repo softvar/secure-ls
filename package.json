@@ -1,14 +1,14 @@
 {
   "name": "secure-ls",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Secure localStorage data with high level of encryption and data compression",
   "main": "dist/secure-ls.js",
   "scripts": {
     "build": "webpack --mode=build",
     "build-dev": "webpack --mode=dev",
-    "build-test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors ./test/*.spec.js",
+    "build-test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors ./test/library.spec.js",
     "dev": "webpack --progress --colors --watch --mode=dev",
-    "test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors -w ./test/*.spec.js"
+    "test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors -w ./test/library.spec.js"
   },
   "devDependencies": {
     "babel": "6.3.13",
