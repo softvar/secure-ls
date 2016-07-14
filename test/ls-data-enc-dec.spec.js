@@ -117,6 +117,41 @@ describe('Encryption / Decryption Tests ->', () => {
     });
   });
 
+  describe('AES encyption, data compression and custom secret key', () => {
+    it('should encrypt data with AES with custom key before storing to localStorage', () => {
+      let valueStored, valueRetrieved;
+      let data = [1, 2, 3];
+      let key = 'key-1';
+
+      lib = new SecureLS({
+        encodingType: 'aes',
+        isCompression: true,
+        encryptionSecret: 'mySecretKey123'
+      });
+      lib.ls = mockStorage;
+      lib.set(key, data);
+
+      expect(lib.config.encryptionSecret).to.equal('mySecretKey123');
+      expect(lib.utils.encryptionSecret).to.equal('mySecretKey123');
+
+      // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠁쁺Ÿીꀜ鄈Àኀ퐁᠁肢ϙ㑀娃࠰Ⲁ찠̨ư༠ǟ踈Ÿ耀 " i.e. compressed AES encrypted
+      valueStored = lib.LZString.compress(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+
+      expect(mockLS.storage[key]).to.exist;
+      expect(mockLS.storage[key]).to.be.a('string');
+
+
+      // Can't check exact values since CryptoJS encryption is time-dependent
+      // expect(mockLS.storage[key]).to.equal(valueStored);
+
+      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = JSON.parse(lib.AES.decrypt(valueRetrieved, lib.utils.encryptionSecret).toString(lib.enc._Utf8));
+      expect(data.toString()).to.equal(valueRetrieved.toString());
+
+      lib.removeAll();
+    });
+  });
+
   describe('DES encyption and no data compression', () => {
     it('should encrypt data with DES before storing to localStorage', () => {
       let valueStored, valueRetrieved;
@@ -126,6 +161,39 @@ describe('Encryption / Decryption Tests ->', () => {
       lib = new SecureLS({encodingType: 'DES', isCompression: false});
       lib.ls = mockStorage;
       lib.set(key, data);
+
+      // corresponding to [1, 2, 3] => "U2FsdGVkX19FJjcyo+8PjIGbhKjZKxEt" i.e. DES encrypted
+      valueStored = lib.DES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString();
+
+      expect(mockLS.storage[key]).to.exist;
+      expect(mockLS.storage[key]).to.be.a('string');
+
+      // Can't check exact values since CryptoJS encryption is time-dependent
+      // expect(mockLS.storage[key]).to.equal(valueStored);
+
+      valueRetrieved = JSON.parse(lib.DES.decrypt(valueStored, lib.utils.encryptionSecret).toString(lib.enc._Utf8));
+      expect(data.toString()).to.equal(valueRetrieved.toString());
+
+      lib.removeAll();
+    });
+  });
+
+  describe('DES encyption, no data compression and custom secret key', () => {
+    it('should encrypt data with DES before storing to localStorage', () => {
+      let valueStored, valueRetrieved;
+      let data = [1, 2, 3];
+      let key = 'key-1';
+
+      lib = new SecureLS({
+        encodingType: 'DES',
+        isCompression: false,
+        encryptionSecret: 'mySecretKey123'
+      });
+      lib.ls = mockStorage;
+      lib.set(key, data);
+
+      expect(lib.config.encryptionSecret).to.equal('mySecretKey123');
+      expect(lib.utils.encryptionSecret).to.equal('mySecretKey123');
 
       // corresponding to [1, 2, 3] => "U2FsdGVkX19FJjcyo+8PjIGbhKjZKxEt" i.e. DES encrypted
       valueStored = lib.DES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString();
@@ -205,6 +273,45 @@ describe('Encryption / Decryption Tests ->', () => {
       lib = new SecureLS({encodingType: 'RABBIT', isCompression: true});
       lib.ls = mockStorage;
       lib.set(key, data);
+
+      // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠉쁩ㆠ倖쀡´ِᅀ༁搄㇀ิ欬臬ע" i.e. compressed RABBIT encrypted
+      valueStored = lib.LZString.compress(lib.RABBIT.encrypt(JSON.stringify(data),
+        lib.utils.encryptionSecret).toString());
+
+      expect(mockLS.storage[key]).to.exist;
+      expect(mockLS.storage[key]).to.be.a('string');
+
+      // Can't check exact values since CryptoJS encryption is time-dependent
+      // expect(mockLS.storage[key]).to.equal(valueStored);
+
+      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = JSON.parse(lib.RABBIT.decrypt(valueRetrieved,
+        lib.utils.encryptionSecret).toString(lib.enc._Utf8));
+      expect(data.toString()).to.equal(valueRetrieved.toString());
+
+      lib.removeAll();
+    });
+  });
+
+  describe('RABBIT encyption, data compression but no secret key', () => {
+    it('should encrypt data with RABBIT before storing to localStorage', () => {
+      let valueStored, valueRetrieved;
+      let data = [1, 2, 3];
+      let key = 'key-1';
+
+      lib = new SecureLS({
+        encodingType: 'RABBIT',
+        isCompression: true,
+        encryptionSecret: ''
+      });
+      lib.ls = mockStorage;
+      lib.set(key, data);
+
+      expect(lib.config.encryptionSecret).to.not.equal('mySecretKey123');
+      expect(lib.utils.encryptionSecret).to.not.equal('mySecretKey123');
+
+      expect(lib.config.encryptionSecret).to.equal('');
+      expect(lib.utils.encryptionSecret).to.equal('');
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠉쁩ㆠ倖쀡´ِᅀ༁搄㇀ิ欬臬ע" i.e. compressed RABBIT encrypted
       valueStored = lib.LZString.compress(lib.RABBIT.encrypt(JSON.stringify(data),
