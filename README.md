@@ -233,7 +233,7 @@ var ls = new SecureLS({encodingType: 'rc4', isCompression: false, encryptionSecr
 
 ## Screenshot
 
-<img src="screenshot.png">
+<img src="screenshot.png" height="800">
 
 ## Scripts
 
