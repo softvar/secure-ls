@@ -1,12 +1,12 @@
 import chai from 'chai';
 import SecureLS from '../dist/secure-ls.js';
-import mockLS from './mock-ls';
+import mockLS from './mock/ls';
 
 const expect = chai.expect;
 
 chai.expect();
 
-describe('LocalSorage API Tests ->', () => {
+describe('Encryption / Decryption Tests ->', () => {
   let mockStorage = mockLS.storageMock();
   let lib;
 
