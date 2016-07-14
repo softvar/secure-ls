@@ -33,12 +33,15 @@ export default class SecureLS {
     this.config.encodingType = (typeof config.encodingType !== 'undefined' || config.encodingType === '') ?
       config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
+    this.config.encryptionSecret = config.encryptionSecret;
 
     this.ls = localStorage;
     this.init();
   };
 
   init() {
+    let metaData = this.getMetaData() || {};
+
     this.WarningEnum = this.constants.WarningEnum;
     this.WarningTypes = this.constants.WarningTypes;
     this.EncrytionTypes = this.constants.EncrytionTypes;
@@ -51,7 +54,7 @@ export default class SecureLS {
     this._isCompression = this._isDataCompressionEnabled();
 
     // fill the already present keys to the list of keys being used by secure-ls
-    this.utils.allKeys = this.getAllKeys();
+    this.utils.allKeys = metaData.keys || this.resetAllKeys();
   };
 
   _isBase64EncryptionType() {
@@ -84,6 +87,32 @@ export default class SecureLS {
     return this.config.isCompression;
   }
 
+  getEncyptionSecret(key) {
+    let metaData = this.getMetaData() || {};
+    let obj = this.utils.getObjectFromKey(metaData.keys, key);
+
+    if (!obj) {
+      return;
+    }
+
+    if (this._isAES ||
+      this._isDES ||
+      this._isRabbit ||
+      this._isRC4
+    ) {
+      if (typeof this.config.encryptionSecret === 'undefined') {
+        this.utils.encryptionSecret = obj.s;
+
+        if (!this.utils.encryptionSecret) {
+          this.utils.encryptionSecret = this.utils.generateSecretKey();
+          this.setMetaData();
+        }
+      } else {
+        this.utils.encryptionSecret = this.config.encryptionSecret || obj.s || '';
+      }
+    }
+  }
+
   get(key, isAllKeysData) {
     let decodedData = '',
       jsonData = '',
@@ -111,6 +140,7 @@ export default class SecureLS {
     if (this._isBase64 || isAllKeysData) { // meta data always Base64
       decodedData = Base64.decode(deCompressedData);
     } else {
+      this.getEncyptionSecret(key);
       if (this._isAES) {
         bytes = AES.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isDES) {
@@ -140,9 +170,9 @@ export default class SecureLS {
   };
 
   getAllKeys() {
-    let data = this.get(this.utils.prefix, true);
+    let data = this.getMetaData();
 
-    return data.keys || [];
+    return this.utils.extractKeyNames(data) || [];
   };
 
   set(key, data) {
@@ -152,8 +182,11 @@ export default class SecureLS {
       this.utils.warn(this.WarningEnum.KEY_NOT_PROVIDED);
       return;
     }
+
+    this.getEncyptionSecret(key);
+
     // add key(s) to Array if not already added, only for keys other than meta key
-    if (!(String(key) === String(this.utils.prefix))) {
+    if (!(String(key) === String(this.utils.metaKey))) {
       if (!this.utils.isKeyPresent(key)) {
         this.utils.addToKeysList(key);
         this.setMetaData();
@@ -175,7 +208,7 @@ export default class SecureLS {
       return;
     }
 
-    if (key === this.utils.prefix && this.getAllKeys().length) {
+    if (key === this.utils.metaKey && this.getAllKeys().length) {
       this.utils.warn(this.WarningEnum.META_KEY_REMOVE);
       return;
     }
@@ -194,15 +227,20 @@ export default class SecureLS {
     for (i = 0; i < keys.length; i++) {
       this.ls.removeItem(keys[i]);
     }
-    this.ls.removeItem(this.utils.prefix);
+    this.ls.removeItem(this.utils.metaKey);
 
-    this.utils.allKeys = [];
+    this.resetAllKeys();
   };
 
   clear() {
     this.ls.clear();
-    this.utils.allKeys = [];
+    this.resetAllKeys();
   };
+
+  resetAllKeys() {
+    this.utils.allKeys = [];
+    return [];
+  }
 
   processData(data, isAllKeysData) {
     if (!data) {
@@ -246,14 +284,16 @@ export default class SecureLS {
   };
 
   setMetaData() {
-    let dataToStore = this.processData({keys: this.utils.allKeys}, true);
+    let dataToStore = this.processData({
+      keys: this.utils.allKeys
+    }, true);
 
     // Store the data to localStorage
-    this.setDataToLocalStorage(this.utils.prefix, dataToStore);
+    this.setDataToLocalStorage(this.utils.metaKey, dataToStore);
   };
 
   getMetaData() {
-    this.get(this.utils.prefix);
+    return this.get(this.utils.metaKey, true);
   };
 
 };
