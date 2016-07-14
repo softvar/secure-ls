@@ -17,6 +17,22 @@ Secure localStorage data with high level of encryption and data compression.
 $ npm install secure-ls
 ```
 
+## Libraries used
+
+* **Encryption / Decryption** using [The Cipher Algorithms](https://code.google.com/archive/p/crypto-js)
+
+  It requires secret-key for encrypting and decrypting data securely. If custom secret-key is provided as mentioned below in APIs, then the library will pick that otherwise it will generate yet another very `secure` unique password key using [PBKDF2](https://code.google.com/archive/p/crypto-js/#PBKDF2), which will be further used for future API requests.
+
+  `PBKDF2` is a password-based key derivation function. In many applications of cryptography, user security is ultimately dependent on a password, and because a password usually can't be used directly as a cryptographic key, some processing is required.
+
+  A salt provides a large set of keys for any given password, and an iteration count increases the cost of producing keys from a password, thereby also increasing the difficulty of attack.
+
+  Eg: `55e8f5585789191d350329b9ebcf2b11` and `db51d35aad96610683d5a40a70b20c39`.
+
+  For the genration of such strings, `secretPhrase` is being used and can be found in code easily but that won't make it unsecure, `PBKDF2`'s layer on top of that will handle security.
+
+* **Compresion / Decompression** using [lz-string](https://github.com/pieroxy/lz-string)
+
 ## Usage
 
 * Example 1: With `default` settings i.e. `Base64` Encoding and Data Compression
@@ -43,10 +59,25 @@ $ npm install secure-ls
 
 ```
 
-* Example 1: With `RC4` Encryption but no Data Compression
+* Example 3: With `RC4` Encryption but no Data Compression
 
 ```
 > var ls = new SecureLS({encodingType: 'rc4', isCompression: false});
+> ls.set('key1', {data: 'test'}); // set key1
+> ls.get('key1'); // print data
+  {data: 'test'}
+
+> ls.set('key2', [1, 2, 3]); // set another key
+> ls.getAllKeys(); // get all keys
+  ["key1", "key2"]
+> ls.removeAll(); // remove all keys
+
+```
+
+* Example 3: With `DES` Encryption, no Data Compression and custom secret key
+
+```
+> var ls = new SecureLS({encodingType: 'des', isCompression: false, encryptionSecret: 'my-secret-key'});
 > ls.set('key1', {data: 'test'}); // set key1
 > ls.get('key1'); // print data
   {data: 'test'}
@@ -66,13 +97,17 @@ $ npm install secure-ls
 var ls = new SecureLS();
 ```
 
-`Contructor` accepts a configurable (optional) `Object` with two keys.
+`Contructor` accepts a configurable `Object` with all three keys being optional.
 
 
-| Config Keys       |     default    |      accepts                              |
-| ----------------- | -------------- | ----------------------------------------- |
-| **encodingType**  |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
-| **isCompression** |     `true`     |    `true`/`false`                         |
+| Config Keys           |     default    |      accepts                              |
+| --------------------- | -------------- | ----------------------------------------- |
+| **encodingType**      |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
+| **isCompression**     |     `true`     |    `true`/`false`                         |
+| **encryptionSecret**  |  PBKDF2 value  |    String                         |
+
+**Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64 encoding method is choosen.
+
 
 **Examples:**
 
@@ -107,6 +142,13 @@ var ls = new SecureLS({encodingType: 'aes'});
 ```
 var ls = new SecureLS({encodingType: 'rc4', isCompression: false});
 ```
+
+* **`RABBIT`** encryption, **`no`** data compression and `custom` encryptionSecret
+
+```
+var ls = new SecureLS({encodingType: 'rc4', isCompression: false, encryptionSecret: 's3cr3tPa$$w0rd@123'});
+```
+
 
 #### Methods
 
