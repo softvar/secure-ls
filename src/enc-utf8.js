@@ -1,3 +1,9 @@
+/*
+ ES6 compatible port of CryptoJS - encoding
+
+ Source: https://github.com/brix/crypto-js
+ LICENSE: MIT
+ */
 let enc = {};
 
 enc.Latin1 = {
