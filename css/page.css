@@ -403,6 +403,32 @@ table {
 	background: url(../images/top.png) no-repeat;
 }
 
+.social-icon {
+  margin-top: 15px;
+  margin-left: 20px;
+  fill: #C0C0C0;
+  transition: all 0.5s ease 0.2s;
+}
+
+.social-icon.linkedin:hover {
+  fill: #65B7D2;
+  text-decoration: none;
+}
+.social-icon.twitter:hover {
+    fill: #52C7FF;
+    text-decoration: none;
+}
+
+.social-icon.stackoverflow:hover {
+    fill: #FF8A1B;
+    text-decoration: none;
+}
+
+.social-icon.github:hover {
+    fill: #333333;
+    text-decoration: none;
+}
+
 .github-corner svg {
 	z-index: 999999;
 	fill: #2CB979 !important;
