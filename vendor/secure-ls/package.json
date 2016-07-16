@@ -1,0 +1,62 @@
+{
+  "name": "secure-ls",
+  "version": "1.1.0",
+  "description": "Secure localStorage data with high level of encryption and data compression",
+  "main": "dist/secure-ls.js",
+  "scripts": {
+    "build": "webpack --mode=build",
+    "build-dev": "webpack --mode=dev",
+    "build-test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors ./test/library.spec.js",
+    "dev": "webpack --progress --colors --watch --mode=dev",
+    "test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors -w ./test/library.spec.js"
+  },
+  "devDependencies": {
+    "babel": "6.3.13",
+    "babel-core": "6.1.18",
+    "babel-eslint": "5.0.0",
+    "babel-loader": "6.1.0",
+    "babel-plugin-add-module-exports": "0.1.2",
+    "babel-preset-es2015": "6.3.13",
+    "chai": "3.4.1",
+    "eslint": "1.7.2",
+    "eslint-loader": "1.1.0",
+    "mocha": "2.3.4",
+    "mock-local-storage": "^1.0.2",
+    "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0",
+    "webpack": "1.12.9",
+    "yargs": "3.32.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softvar/secure-ls.git"
+  },
+  "keywords": [
+    "secure-ls",
+    "localStorage",
+    "encryption",
+    "compression",
+    "webpack",
+    "es6",
+    "umd",
+    "commonjs"
+  ],
+  "author": {
+    "name": "Varun Malhotra"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/softvar/secure-ls/issues"
+  },
+  "homepage": "https://github.com/softvar/secure-ls",
+  "dependencies": {
+    "crypto-js": "^3.1.6",
+    "lz-string": "^1.4.4"
+  },
+  "readme": "# secure-ls\n\nSecure localStorage data with high level of encryption and data compression.\n\n[![npm version](https://badge.fury.io/js/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls)\n\n## Features\n\n* Secure data with various types of encryption including `AES`, `DES`, `Rabbit` and `RC4`. (defaults to `Base64` encoding).\n* Compress data before storing it to `localStorage` to save extra bytes (defaults to `true`).\n* Advanced API wrapper over `localStorage` API, providing other basic utilities.\n* Save data in multiple keys inside `localStorage` and `secure-ls` will always remember it's creation.\n\n## Installation\n\n```\n$ npm install secure-ls\n```\n\n## Libraries used\n\n* **Encryption / Decryption** using [The Cipher Algorithms](https://code.google.com/archive/p/crypto-js)\n\n  It requires secret-key for encrypting and decrypting data securely. If custom secret-key is provided as mentioned below in APIs, then the library will pick that otherwise it will generate yet another very `secure` unique password key using [PBKDF2](https://code.google.com/archive/p/crypto-js/#PBKDF2), which will be further used for future API requests.\n\n  `PBKDF2` is a password-based key derivation function. In many applications of cryptography, user security is ultimately dependent on a password, and because a password usually can't be used directly as a cryptographic key, some processing is required.\n\n  A salt provides a large set of keys for any given password, and an iteration count increases the cost of producing keys from a password, thereby also increasing the difficulty of attack.\n\n  Eg: `55e8f5585789191d350329b9ebcf2b11` and `db51d35aad96610683d5a40a70b20c39`.\n\n  For the genration of such strings, `secretPhrase` is being used and can be found in code easily but that won't make it unsecure, `PBKDF2`'s layer on top of that will handle security.\n\n* **Compresion / Decompression** using [lz-string](https://github.com/pieroxy/lz-string)\n\n## Usage\n\n* Example 1: With `default` settings i.e. `Base64` Encoding and Data Compression\n\n```\n> var ls = new SecureLS();\n> ls.set('key1', {data: 'test'}); // set key1\n> ls.get('key1'); // print data\n  {data: 'test'}\n```\n\n* Example 2: With `AES` Encryption and Data Compression\n\n```\n> var ls = new SecureLS({encodingType: 'aes'});\n> ls.set('key1', {data: 'test'}); // set key1\n> ls.get('key1'); // print data\n  {data: 'test'}\n\n> ls.set('key2', [1, 2, 3]); // set another key\n> ls.getAllKeys(); // get all keys\n  [\"key1\", \"key2\"]\n> ls.removeAll(); // remove all keys\n\n```\n\n* Example 3: With `RC4` Encryption but no Data Compression\n\n```\n> var ls = new SecureLS({encodingType: 'rc4', isCompression: false});\n> ls.set('key1', {data: 'test'}); // set key1\n> ls.get('key1'); // print data\n  {data: 'test'}\n\n> ls.set('key2', [1, 2, 3]); // set another key\n> ls.getAllKeys(); // get all keys\n  [\"key1\", \"key2\"]\n> ls.removeAll(); // remove all keys\n\n```\n\n* Example 3: With `DES` Encryption, no Data Compression and custom secret key\n\n```\n> var ls = new SecureLS({encodingType: 'des', isCompression: false, encryptionSecret: 'my-secret-key'});\n> ls.set('key1', {data: 'test'}); // set key1\n> ls.get('key1'); // print data\n  {data: 'test'}\n\n> ls.set('key2', [1, 2, 3]); // set another key\n> ls.getAllKeys(); // get all keys\n  [\"key1\", \"key2\"]\n> ls.removeAll(); // remove all keys\n\n```\n\n## API Documentation\n\n#### Create an instance / reference before using.\n\n```\nvar ls = new SecureLS();\n```\n\n`Contructor` accepts a configurable `Object` with all three keys being optional.\n\n\n| Config Keys           |     default    |      accepts                              |\n| --------------------- | -------------- | ----------------------------------------- |\n| **encodingType**      |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |\n| **isCompression**     |     `true`     |    `true`/`false`                         |\n| **encryptionSecret**  |  PBKDF2 value  |    String                         |\n\n**Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64 encoding method is choosen.\n\n\n**Examples:**\n\n* No config or empty Object i.e. Default **`Base64 Encoding`** and **`Data compression`**\n\n```\nvar ls = new SecureLS();\n// or\nvar ls = new SecureLS({});\n```\n\n* No encoding No data compression i.e. **`Normal`** way of storing data\n\n```\nvar ls = new SecureLS({encodingType: '', isCompression: false});\n```\n\n* **`Base64`** encoding but **`no`** data compression\n\n```\nvar ls = new SecureLS({isCompression: false});\n```\n\n* **`AES`** encryption and **`data compression`**\n\n```\nvar ls = new SecureLS({encodingType: 'aes'});\n```\n\n* **`RC4`** encryption and **`no`** data compression\n\n```\nvar ls = new SecureLS({encodingType: 'rc4', isCompression: false});\n```\n\n* **`RABBIT`** encryption, **`no`** data compression and `custom` encryptionSecret\n\n```\nvar ls = new SecureLS({encodingType: 'rc4', isCompression: false, encryptionSecret: 's3cr3tPa$$w0rd@123'});\n```\n\n\n#### Methods\n\n* **`set`**\n\n  Saves `data` in specifed `key` in localStorage. If the key is not provided, the library will warn. Following types of JavaScript objects are supported:\n\n  * Array\n  * ArrayBuffer\n  * Blob\n  * Float32Array\n  * Float64Array\n  * Int8Array\n  * Int16Array\n  * Int32Array\n  * Number\n  * Object\n  * Uint8Array\n  * Uint8ClampedArray\n  * Uint16Array\n  * Uint32Array\n  * String\n\n  |   Parameter   |        Description          |\n  | ------------- | --------------------------- |\n  |     key       |     key to store data in    |\n  |     data      |      data to be stored      |\n\n  ```\n    ls.set('key-name', {test: 'secure-ls'})\n  ```\n\n* **`get`**\n\n  Gets `data` back from specified `key` from the localStorage library. If the key is not provided, the library will warn.\n\n  |   Parameter   |         Description                 |\n  | ------------- | ----------------------------------- |\n  |     key       |     key in which data is stored     |\n\n  ```\n    ls.get('key-name'})\n  ```\n\n* **`remove`**\n\n  Removes the value of a key from the localStorage. If the `meta key`, which stores the list of keys, is tried to be removed even if there are other keys which were created by `secure-ls` library, the library will warn for the action.\n\n  |   Parameter   |         Description                       |\n  | ------------- | ----------------------------------------- |\n  |     key       |     remove key in which data is stored    |\n\n  ```\n    ls.remove('key-name')\n  ```\n\n* **`removeAll`**\n\n  Removes all the keys that were created by the `secure-ls` library, even the `meta key`.\n\n  ```\n    ls.removeAll()\n  ```\n\n* **`clear`**\n\n  Removes all the keys ever created for that particular domain. Remember localStorage works differently for `http` and `https` protocol;\n\n  ```\n    ls.clear()\n  ```\n\n* **`getAllKeys`**\n\n  Gets the list of keys that were created using the `secure-ls` library. Helpful when data needs to be retrieved for all the keys or when keys name are not known(dynamically created keys).\n\n  `getAllKeys()`\n\n  ```\n    ls.getAllKeys()\n  ```\n\n## Scripts\n\n* `npm run build` - produces production version of the library under the `dist` folder\n* `npm run dev` - produces development version of the library and runs a watcher\n* `npm run test` - well ... it runs the tests :)\n\n## Contributing\n\n1. Fork the repo on GitHub.\n2. Clone the repo on machine.\n3. Execute `npm install` and `npm run dev`.\n3. Create a new branch `<fix-typo>` and do your work.\n4. Run `npm run build` to build dist files and `npm run test` to ensure all test cases are passing.\n5. Commit your changes to the branch.\n6. Submit a Pull request.\n\n## Development Stack\n\n* Webpack based `src` compilation & bundling and `dist` generation.\n* ES6 as a source of writing code.\n* Exports in a [umd](https://github.com/umdjs/umd) format so the library works everywhere.\n* ES6 test setup with [Mocha](http://mochajs.org/) and [Chai](http://chaijs.com/).\n* Linting with [ESLint](http://eslint.org/).\n\n## Process\n\n```\nES6 source files\n       |\n       |\n    webpack\n       |\n       +--- babel, eslint\n       |\n  ready to use\n     library\n  in umd format\n```\n\n## Copyright and license\n\n>The [MIT license](https://opensource.org/licenses/MIT) (MIT)\n>\n>Copyright (c) 2015-2016 Varun Malhotra\n>\n>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n>\n>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n>\n>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "readmeFilename": "README.md",
+  "gitHead": "6fcb7fd0eb70f98d7445f1060ae3957978b2dd38",
+  "_id": "secure-ls@1.1.0",
+  "_shasum": "07618eb1818654ac2880e5cc26ae9f55038d8c6b",
+  "_from": "secure-ls@*"
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example Page</title>
+	<script type="text/javascript" src="../dist/secure-ls.js"></script>
+	<script type="text/javascript" src="vendor/screenlog.min.js"></script>
+
+</head>
+<body>
+	Open console to check localStorage data.
+	<br />
+	All of the console output from various examples will be log here. Scroll within it to view all logs.
+	<br /><br />
+	Input:  <pre>{"data":[{"age":1},{"age":"2"}]}</pre>
+	Output: <pre>{"data":[{"age":1},{"age":"2"}]}</pre>
+	<script type="text/javascript">
+		screenLog.init({
+			autoScroll: false
+		});
+	</script>
+
+	<script type="text/javascript" src="standard.js"></script>
+	<script type="text/javascript" src="only-base64.js"></script>
+	<script type="text/javascript" src="only-compressed.js"></script>
+	<script type="text/javascript" src="base64-compressed.js"></script>
+	<script type="text/javascript" src="aes-compressed.js"></script>
+	<script type="text/javascript" src="aes-uncompressed.js"></script>
+	<script type="text/javascript" src="des-compressed.js"></script>
+	<script type="text/javascript" src="des-uncompressed.js"></script>
+	<script type="text/javascript" src="rabbit-compressed.js"></script>
+	<script type="text/javascript" src="rabbit-uncompressed.js"></script>
+	<script type="text/javascript" src="rc4-compressed.js"></script>
+	<script type="text/javascript" src="rc4-uncompressed.js"></script>
+</body>
+</html>
