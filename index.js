@@ -21,6 +21,12 @@ $(document).ready(function () {
     	$('.live-demo-nav-link').removeClass('is-active');
 	}
 
+    if (!window.location.hash) {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 0);
+    }
+
     $(window).on('scroll', function () {
         var topOffset = $(this).scrollTop(),
         	viewportHeight = document.documentElement.clientHeight;

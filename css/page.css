@@ -403,9 +403,6 @@ table {
 	background: url(../images/top.png) no-repeat;
 }
 
-.github-corner {
-	position: fixed;
-}
 .github-corner svg {
 	z-index: 999999;
 	fill: #2CB979 !important;
