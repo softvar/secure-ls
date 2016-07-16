@@ -311,7 +311,7 @@ footer a {
 		display: none;
 	}
   .script-download {
-    font-size: 18px;
+    font-size: 18px !important;
   }
 }
 
@@ -320,8 +320,8 @@ footer a {
 	.nav-links, .mdl-mini-footer__right-section, table {
 		display: none;
 	}
-    font-size: 25px;
-    font-size: 18px;
+  .script-download {
+    font-size: 18px !important;
   }
 }
 
