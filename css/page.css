@@ -310,6 +310,9 @@ footer a {
 	.nav-links, .mdl-mini-footer__right-section {
 		display: none;
 	}
+  .script-download {
+    font-size: 18px;
+  }
 }
 
 /* Landscape phones and down */
@@ -317,6 +320,9 @@ footer a {
 	.nav-links, .mdl-mini-footer__right-section, table {
 		display: none;
 	}
+    font-size: 25px;
+    font-size: 18px;
+  }
 }
 
 table {
@@ -373,6 +379,12 @@ table {
 	display: table-cell;
 	vertical-align: middle;
 	padding: 40px;
+}
+
+.script-download {
+  font-size: 25px;
+  background: #eaeaea;
+  text-align: center;
 }
 
 .code {
