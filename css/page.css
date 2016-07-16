@@ -285,12 +285,10 @@ small {
 }
 
 footer {
-	color: #444 !important;
-    background: #2cb979 !important;
+  background: #424242 !important;
 }
 
 footer a {
-	color: #fff;
 	font-weight: 600;
 }
 /*******************************
