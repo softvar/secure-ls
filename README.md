@@ -4,6 +4,8 @@ Secure localStorage data with high level of encryption and data compression.
 
 [![npm version](https://badge.fury.io/js/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls)
 
+**[LIVE DEMO](http://softvar.github.io/secure-ls#live-demo)**
+
 ## Features
 
 * Secure data with various types of encryption including `AES`, `DES`, `Rabbit` and `RC4`. (defaults to `Base64` encoding).
