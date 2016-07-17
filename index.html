@@ -288,7 +288,7 @@ var ls = new SecureLS({
 
 				<h4>Methods</h4>
 
-				<h5>set</h5>
+				<h5 style="margin-top: 40px;">set</h5>
 
 				Saves data in specifed key in localStorage. If the key is not provided, the library will warn. Following types of JavaScript objects are supported:
 
@@ -337,7 +337,7 @@ ls.set('key-name', {
 </code></pre>
 
 
-				<h5>get</h5>
+				<h5 style="margin-top: 40px;">get</h5>
 
 				Gets data back from specified key from the localStorage library. If the key is not provided, the library will warn.
 
@@ -358,7 +358,7 @@ ls.set('key-name', {
 
 				<pre><code class="hljs">ls.get('key-name'})</code></pre>
 
-				<h5>remove</h5>
+				<h5 style="margin-top: 40px;">remove</h5>
 
 				Removes the value of a key from the localStorage. If the meta key, which stores the list of keys, is tried to be removed even if there are other keys which were created by secure-ls library, the library will warn for the action.
 
@@ -379,19 +379,19 @@ ls.set('key-name', {
 
 				<pre><code class="hljs">ls.remove('key-name')</code></pre>
 
-				<h5>removeAll</h5>
+				<h5 style="margin-top: 40px;">removeAll</h5>
 
 				Removes all the keys that were created by the secure-ls library, even the meta key.
 
 				<pre><code class="hljs">ls.removeAll()</code></pre>
 
-				<h5>clear</h5>
+				<h5 style="margin-top: 40px;">clear</h5>
 
 				Removes all the keys ever created for that particular domain. Remember localStorage works differently for http and https protocol;
 
 				<pre><code class="hljs">ls.clear()</code></pre>
 
-				<h5>getAllKeys</h5>
+				<h5 style="margin-top: 40px;">getAllKeys</h5>
 
 				Gets the list of keys that were created using the secure-ls library. Helpful when data needs to be retrieved for all the keys or when keys name are not known(dynamically created keys).
 
