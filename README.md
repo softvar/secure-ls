@@ -276,6 +276,20 @@ ES6 source files
   in umd format
 ```
 
+## Credits
+
+Many thanks to:
+
+* [@brix](https://github.com/brix) for the awesome **[crypto-js](https://github.com/brix/crypto-js)** library for encrypting and decrypting data securely.
+
+* [@pieroxy](https://github.com/pieroxy) for the **[lz-string](https://github.com/pieroxy/lz-string)** js library for data compression / decompression.
+
+* [@chinchang](https://github.com/chinchang) for the below open-source libraries which are used only for the [Landing Page Development](http://varunmalhotra.xyz/secure-ls/).
+
+  * **[screenlog.js](https://github.com/chinchang/screenlog.js/)** - Brings console.log on the page's screen.
+  * **[superplaceholder.js](https://github.com/chinchang/superplaceholder.js)** - For super charging input placeholders.
+
+
 ## Copyright and license
 
 >The [MIT license](https://opensource.org/licenses/MIT) (MIT)
