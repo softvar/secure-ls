@@ -385,14 +385,19 @@ table {
   font-size: 25px;
   background: #eaeaea;
   text-align: center;
+  border-left: 3px solid #b1b1b1;
+}
+
+code {
+  border-left: 3px solid #b1b1b1;
 }
 
 .code {
 	padding: 10px;
-    background: #DEDEDE;
-    color: #444;
-    margin-top: 15px;
-    margin-bottom: 15px;
+  background: #DEDEDE;
+  color: #444;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 #usage .code {
