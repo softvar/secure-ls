@@ -192,7 +192,7 @@ var ls = new SecureLS({encodingType: 'rc4', isCompression: false, encryptionSecr
   |     key       |     key in which data is stored     |
 
   ```
-    ls.get('key-name'})
+    ls.get('key-name')
   ```
 
 * **`remove`**
