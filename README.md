@@ -2,7 +2,7 @@
 
 Secure localStorage data with high level of encryption and data compression.
 
-[![npm version](https://badge.fury.io/js/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls)
+[![npm version](https://badge.fury.io/js/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg)](https://www.npmjs.com/package/secure-ls) [![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls) [![Coverage Status](https://coveralls.io/repos/github/softvar/secure-ls/badge.svg?branch=master)](https://coveralls.io/github/softvar/secure-ls?branch=master)
 
 **[LIVE DEMO](http://softvar.github.io/secure-ls#live-demo)**
 
