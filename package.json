@@ -9,7 +9,7 @@
     "build-test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors ./test/library.spec.js",
     "dev": "webpack --progress --colors --watch --mode=dev",
     "test": "mocha -r mock-local-storage --compilers js:babel-core/register --colors -w ./test/library.spec.js",
-    "coverage": "node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "coverage": "node node_modules/.bin/istanbul cover _mocha -r mock-local-storage --compilers js:babel-core/register --color -w ./test/library.spec.js"
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "devDependencies": {
