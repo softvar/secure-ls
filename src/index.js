@@ -35,7 +35,7 @@ export default class SecureLS {
       constants.EncrytionTypes.BASE64;
     this.config.encryptionSecret = config.encryptionSecret;
 
-    this.ls = this.config.storageType || localStorage;
+    this.ls = config.storageType || localStorage;
     this.init();
   };
 

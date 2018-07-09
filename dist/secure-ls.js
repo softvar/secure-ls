@@ -126,7 +126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.config.encodingType = typeof config.encodingType !== 'undefined' || config.encodingType === '' ? config.encodingType.toLowerCase() : _constants2.default.EncrytionTypes.BASE64;
 	    this.config.encryptionSecret = config.encryptionSecret;
 	
-	    this.ls = this.config.storageType || localStorage;
+	    this.ls = config.storageType || localStorage;
 	    this.init();
 	  }
 	
@@ -406,8 +406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'getItem',
 	
 	
-	    // polyfill
-	
+	    // enable compatiblity with the sessionStorage/localStorage api
 	    value: function getItem(key, isAllKeysData) {
 	      return this.get(key, isAllKeysData);
 	    }

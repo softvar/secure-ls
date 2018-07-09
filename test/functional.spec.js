@@ -2,6 +2,7 @@ import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import SecureLS from '../dist/secure-ls.js';
+import mockLS from './mock/ls';
 
 chai.expect();
 chai.use(sinonChai);
@@ -211,6 +212,17 @@ describe('Functional tests', () => {
       expect(spyOnLZStringCompress).to.been.called;
 
       spyOnLZStringCompress.restore();
+    });
+  });
+
+  describe('Config test: custom storageType', () => {
+    it('should set storage accordingly', () => {
+
+      let mockStorage = mockLS.storageMock();
+
+      lib = new SecureLS({storageType: mockStorage});
+
+      expect(lib.ls).to.equal(mockStorage);
     });
   });
 
