@@ -296,8 +296,7 @@ export default class SecureLS {
     return this.get(this.utils.metaKey, true);
   };
 
-  // polyfill
-
+  // enable compatiblity with the sessionStorage/localStorage api
   getItem(key, isAllKeysData) {
     return this.get(key, isAllKeysData);
   }

@@ -106,7 +106,8 @@ var ls = new SecureLS();
 | --------------------- | -------------- | ----------------------------------------- |
 | **encodingType**      |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
 | **isCompression**     |     `true`     |    `true`/`false`                         |
-| **encryptionSecret**  |  PBKDF2 value  |    String                         |
+| **encryptionSecret**  |  PBKDF2 value  |    String                                 |
+| **storageType**       |  localStorage  |    Object                                 |
 
 **Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64 encoding method is choosen.
 
@@ -149,6 +150,12 @@ var ls = new SecureLS({encodingType: 'rc4', isCompression: false});
 
 ```
 var ls = new SecureLS({encodingType: 'rc4', isCompression: false, encryptionSecret: 's3cr3tPa$$w0rd@123'});
+```
+
+* Persisting data in sessionStorage instead of localStorage
+
+```
+var ls = new SecureLS({storageType: sessionStorage});
 ```
 
 
