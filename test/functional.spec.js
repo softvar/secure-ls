@@ -217,11 +217,9 @@ describe('Functional tests', () => {
 
   describe('Config test: custom storageType', () => {
     it('should set storage accordingly', () => {
-
-      let mockStorage = mockLS.storageMock();
+      const mockStorage = mockLS.storageMock();
 
       lib = new SecureLS({storageType: mockStorage});
-
       expect(lib.ls).to.equal(mockStorage);
     });
   });
