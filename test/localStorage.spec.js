@@ -148,7 +148,7 @@ describe('LocalSorage API Tests ->', () => {
       expect(value2.length).to.equal(3);
       expect(value2.toString()).to.equal(data.toString());
 
-      lib.remove(key1);
+      lib.removeItem(key1);
       value1 = lib.getItem(key1);
       expect(mockLS.storage[key1]).to.not.exist;
       expect(value1).to.not.be.an('array');
@@ -158,7 +158,7 @@ describe('LocalSorage API Tests ->', () => {
       expect(value2.length).to.equal(3);
       expect(value2.toString()).to.equal(data.toString());
 
-      lib.remove(key2);
+      lib.removeItem(key2);
       value1 = lib.getItem(key1);
       expect(mockLS.storage[key1]).to.not.exist;
       expect(value1).to.not.be.an('array');
