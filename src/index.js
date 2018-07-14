@@ -133,7 +133,7 @@ export default class SecureLS {
 
     deCompressedData = data; // saves else
     if (this._isCompression || isAllKeysData) { // meta data always compressed
-      deCompressedData = LZString.decompress(data);
+      deCompressedData = LZString.decompressFromUTF16(data);
     }
 
     decodedData = deCompressedData; // saves else
@@ -277,7 +277,7 @@ export default class SecureLS {
     // Compress data if set to true
     compressedData = encodedData;
     if (this._isCompression || isAllKeysData) {
-      compressedData = LZString.compress(encodedData);
+      compressedData = LZString.compressToUTF16(encodedData);
     }
 
     return compressedData;

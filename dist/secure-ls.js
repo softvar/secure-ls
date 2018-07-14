@@ -225,7 +225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      deCompressedData = data; // saves else
 	      if (this._isCompression || isAllKeysData) {
 	        // meta data always compressed
-	        deCompressedData = _lzString2.default.decompress(data);
+	        deCompressedData = _lzString2.default.decompressFromUTF16(data);
 	      }
 	
 	      decodedData = deCompressedData; // saves else
@@ -382,7 +382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Compress data if set to true
 	      compressedData = encodedData;
 	      if (this._isCompression || isAllKeysData) {
-	        compressedData = _lzString2.default.compress(encodedData);
+	        compressedData = _lzString2.default.compressToUTF16(encodedData);
 	      }
 	
 	      return compressedData;
@@ -409,7 +409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = SecureLS;
 	;
-	module.exports = exports['default'];
+	module.exports = exports.default;
 
 /***/ },
 /* 1 */
@@ -777,6 +777,25 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * CryptoJS core components.
 		 */
 		var CryptoJS = CryptoJS || (function (Math, undefined) {
+		    /*
+		     * Local polyfil of Object.create
+		     */
+		    var create = Object.create || (function () {
+		        function F() {};
+	
+		        return function (obj) {
+		            var subtype;
+	
+		            F.prototype = obj;
+	
+		            subtype = new F();
+	
+		            F.prototype = null;
+	
+		            return subtype;
+		        };
+		    }())
+	
 		    /**
 		     * CryptoJS namespace.
 		     */
@@ -791,7 +810,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		     * Base object for prototypal inheritance.
 		     */
 		    var Base = C_lib.Base = (function () {
-		        function F() {}
+	
 	
 		        return {
 		            /**
@@ -814,8 +833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		             */
 		            extend: function (overrides) {
 		                // Spawn
-		                F.prototype = this;
-		                var subtype = new F();
+		                var subtype = create(this);
 	
 		                // Augment
 		                if (overrides) {
@@ -823,7 +841,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		                }
 	
 		                // Create default initializer
-		                if (!subtype.hasOwnProperty('init')) {
+		                if (!subtype.hasOwnProperty('init') || this.init === subtype.init) {
 		                    subtype.init = function () {
 		                        subtype.$super.init.apply(this, arguments);
 		                    };
@@ -2571,13 +2589,18 @@ return /******/ (function(modules) { // webpackBootstrap
 		     */
 		    var AES = C_algo.AES = BlockCipher.extend({
 		        _doReset: function () {
+		            // Skip reset of nRounds has been set before and key did not change
+		            if (this._nRounds && this._keyPriorReset === this._key) {
+		                return;
+		            }
+	
 		            // Shortcuts
-		            var key = this._key;
+		            var key = this._keyPriorReset = this._key;
 		            var keyWords = key.words;
 		            var keySize = key.sigBytes / 4;
 	
 		            // Compute number of rounds
-		            var nRounds = this._nRounds = keySize + 6
+		            var nRounds = this._nRounds = keySize + 6;
 	
 		            // Compute number of key schedule rows
 		            var ksRows = (nRounds + 1) * 4;
@@ -2800,34 +2823,45 @@ return /******/ (function(modules) { // webpackBootstrap
 		            // Shortcuts
 		            var base64StrLength = base64Str.length;
 		            var map = this._map;
+		            var reverseMap = this._reverseMap;
+	
+		            if (!reverseMap) {
+		                    reverseMap = this._reverseMap = [];
+		                    for (var j = 0; j < map.length; j++) {
+		                        reverseMap[map.charCodeAt(j)] = j;
+		                    }
+		            }
 	
 		            // Ignore padding
 		            var paddingChar = map.charAt(64);
 		            if (paddingChar) {
 		                var paddingIndex = base64Str.indexOf(paddingChar);
-		                if (paddingIndex != -1) {
+		                if (paddingIndex !== -1) {
 		                    base64StrLength = paddingIndex;
 		                }
 		            }
 	
 		            // Convert
-		            var words = [];
-		            var nBytes = 0;
-		            for (var i = 0; i < base64StrLength; i++) {
-		                if (i % 4) {
-		                    var bits1 = map.indexOf(base64Str.charAt(i - 1)) << ((i % 4) * 2);
-		                    var bits2 = map.indexOf(base64Str.charAt(i)) >>> (6 - (i % 4) * 2);
-		                    var bitsCombined = bits1 | bits2;
-		                    words[nBytes >>> 2] |= (bitsCombined) << (24 - (nBytes % 4) * 8);
-		                    nBytes++;
-		                }
-		            }
+		            return parseLoop(base64Str, base64StrLength, reverseMap);
 	
-		            return WordArray.create(words, nBytes);
 		        },
 	
 		        _map: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
 		    };
+	
+		    function parseLoop(base64Str, base64StrLength, reverseMap) {
+		      var words = [];
+		      var nBytes = 0;
+		      for (var i = 0; i < base64StrLength; i++) {
+		          if (i % 4) {
+		              var bits1 = reverseMap[base64Str.charCodeAt(i - 1)] << ((i % 4) * 2);
+		              var bits2 = reverseMap[base64Str.charCodeAt(i)] >>> (6 - (i % 4) * 2);
+		              words[nBytes >>> 2] |= (bits1 | bits2) << (24 - (nBytes % 4) * 8);
+		              nBytes++;
+		          }
+		      }
+		      return WordArray.create(words, nBytes);
+		    }
 		}());
 	
 	

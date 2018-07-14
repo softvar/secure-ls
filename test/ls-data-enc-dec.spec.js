@@ -53,7 +53,7 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "㪂ೠ눉惮 脔ொꀀ" i.e. Base64 encoded
-      valueStored = lib.LZString.compress(lib.Base64.encode(JSON.stringify(data)));
+      valueStored = lib.LZString.compressToUTF16(lib.Base64.encode(JSON.stringify(data)));
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -101,7 +101,7 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠁쁺Ÿીꀜ鄈Àኀ퐁᠁肢ϙ㑀娃࠰Ⲁ찠̨ư༠ǟ踈Ÿ耀 " i.e. compressed AES encrypted
-      valueStored = lib.LZString.compress(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -109,7 +109,7 @@ describe('Encryption / Decryption Tests ->', () => {
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
 
-      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = lib.LZString.decompressFromUTF16(valueStored);
       valueRetrieved = JSON.parse(lib.AES.decrypt(valueRetrieved, lib.utils.encryptionSecret).toString(lib.enc._Utf8));
       expect(data.toString()).to.equal(valueRetrieved.toString());
 
@@ -135,7 +135,7 @@ describe('Encryption / Decryption Tests ->', () => {
       expect(lib.utils.encryptionSecret).to.equal('mySecretKey123');
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠁쁺Ÿીꀜ鄈Àኀ퐁᠁肢ϙ㑀娃࠰Ⲁ찠̨ư༠ǟ踈Ÿ耀 " i.e. compressed AES encrypted
-      valueStored = lib.LZString.compress(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -144,7 +144,7 @@ describe('Encryption / Decryption Tests ->', () => {
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
 
-      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = lib.LZString.decompressFromUTF16(valueStored);
       valueRetrieved = JSON.parse(lib.AES.decrypt(valueRetrieved, lib.utils.encryptionSecret).toString(lib.enc._Utf8));
       expect(data.toString()).to.equal(valueRetrieved.toString());
 
@@ -222,7 +222,7 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠉쁡㠓䌄倈쁺ᆰୀ䬐ʐɀ挀喠儴ݲ " i.e. compressed DES encrypted
-      valueStored = lib.LZString.compress(lib.DES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(lib.DES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -230,7 +230,7 @@ describe('Encryption / Decryption Tests ->', () => {
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
 
-      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = lib.LZString.decompressFromUTF16(valueStored);
       valueRetrieved = JSON.parse(lib.DES.decrypt(valueRetrieved, lib.utils.encryptionSecret).toString(lib.enc._Utf8));
       expect(data.toString()).to.equal(valueRetrieved.toString());
 
@@ -275,7 +275,7 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠉쁩ㆠ倖쀡´ِᅀ༁搄㇀ิ欬臬ע" i.e. compressed RABBIT encrypted
-      valueStored = lib.LZString.compress(lib.RABBIT.encrypt(JSON.stringify(data),
+      valueStored = lib.LZString.compressToUTF16(lib.RABBIT.encrypt(JSON.stringify(data),
         lib.utils.encryptionSecret).toString());
 
       expect(mockLS.storage[key]).to.exist;
@@ -284,7 +284,7 @@ describe('Encryption / Decryption Tests ->', () => {
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
 
-      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = lib.LZString.decompressFromUTF16(valueStored);
       valueRetrieved = JSON.parse(lib.RABBIT.decrypt(valueRetrieved,
         lib.utils.encryptionSecret).toString(lib.enc._Utf8));
       expect(data.toString()).to.equal(valueRetrieved.toString());
@@ -314,7 +314,7 @@ describe('Encryption / Decryption Tests ->', () => {
       expect(lib.utils.encryptionSecret).to.equal('');
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠉쁩ㆠ倖쀡´ِᅀ༁搄㇀ิ欬臬ע" i.e. compressed RABBIT encrypted
-      valueStored = lib.LZString.compress(lib.RABBIT.encrypt(JSON.stringify(data),
+      valueStored = lib.LZString.compressToUTF16(lib.RABBIT.encrypt(JSON.stringify(data),
         lib.utils.encryptionSecret).toString());
 
       expect(mockLS.storage[key]).to.exist;
@@ -323,7 +323,7 @@ describe('Encryption / Decryption Tests ->', () => {
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
 
-      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = lib.LZString.decompressFromUTF16(valueStored);
       valueRetrieved = JSON.parse(lib.RABBIT.decrypt(valueRetrieved,
         lib.utils.encryptionSecret).toString(lib.enc._Utf8));
       expect(data.toString()).to.equal(valueRetrieved.toString());
@@ -369,7 +369,7 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠍䁅̘ࡀ⡀⢀丈٠ⶀ㙸໠ވɘའ̀눂 " i.e. compressed RC4 encrypted
-      valueStored = lib.LZString.compress(lib.RC4.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(lib.RC4.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -377,7 +377,7 @@ describe('Encryption / Decryption Tests ->', () => {
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
 
-      valueRetrieved = lib.LZString.decompress(valueStored);
+      valueRetrieved = lib.LZString.decompressFromUTF16(valueStored);
       valueRetrieved = JSON.parse(lib.RC4.decrypt(valueRetrieved, lib.utils.encryptionSecret).toString(lib.enc._Utf8));
       expect(data.toString()).to.equal(valueRetrieved.toString());
 

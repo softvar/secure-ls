@@ -85,7 +85,7 @@ describe('Functional tests', () => {
 
   describe('processData: method', () => {
     it('should return if no data provided', () => {
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
 
       lib.processData();
       expect(spyOnLZStringCompress).to.not.been.called;
@@ -96,7 +96,7 @@ describe('Functional tests', () => {
     it('should call AES encrypt if encoding is AES', () => {
       lib = new SecureLS({encodingType: 'aes'});
 
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnAESEncrypt = sinon.spy(lib.AES, 'encrypt');
       let spyOnRABBITEncrypt = sinon.spy(lib.RABBIT, 'encrypt');
       let data = {
@@ -118,7 +118,7 @@ describe('Functional tests', () => {
     it('should call DES encrypt if encoding is DES', () => {
       lib = new SecureLS({encodingType: 'DES'});
 
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnDESEncrypt = sinon.spy(lib.DES, 'encrypt');
       let spyOnRABBITEncrypt = sinon.spy(lib.RABBIT, 'encrypt');
       let data = {
@@ -140,7 +140,7 @@ describe('Functional tests', () => {
     it('should call RABBIT encrypt if encoding is RABBIT', () => {
       lib = new SecureLS({encodingType: 'RABBIT'});
 
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnRABBITEncrypt = sinon.spy(lib.RABBIT, 'encrypt');
       let spyOnAESEncrypt = sinon.spy(lib.AES, 'encrypt');
       let data = {
@@ -162,7 +162,7 @@ describe('Functional tests', () => {
     it('should call RC4 encrypt if encoding is RC4', () => {
       lib = new SecureLS({encodingType: 'RC4'});
 
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnRC4Encrypt = sinon.spy(lib.RC4, 'encrypt');
       let spyOnRABBITEncrypt = sinon.spy(lib.RABBIT, 'encrypt');
       let data = {
@@ -184,7 +184,7 @@ describe('Functional tests', () => {
     it('should not call LZString compress if compression OFF', () => {
       lib = new SecureLS({encodingType: 'aes', isCompression: false});
 
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let data = {
         username: 'softvar',
         module: 'secure-ls',
@@ -200,7 +200,7 @@ describe('Functional tests', () => {
     it('should call LZString compress if compression in ON', () => {
       lib = new SecureLS({encodingType: 'aes', isCompression: true});
 
-      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
+      let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let data = {
         username: 'softvar',
         module: 'secure-ls',

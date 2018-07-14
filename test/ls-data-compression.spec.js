@@ -31,7 +31,7 @@ describe('Data Compression Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => WzEsMiwzXQ== i.e. Base64 encoded
-      valueStored = lib.LZString.compress(lib.Base64.encode(JSON.stringify(data)));
+      valueStored = lib.LZString.compressToUTF16(lib.Base64.encode(JSON.stringify(data)));
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -73,7 +73,7 @@ describe('Data Compression Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => 㪂ೠ눉惮 脔ொꀀ
-      valueStored = lib.LZString.compress(lib.Base64.encode(JSON.stringify(data)));
+      valueStored = lib.LZString.compressToUTF16(lib.Base64.encode(JSON.stringify(data)));
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -93,7 +93,7 @@ describe('Data Compression Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => ⦄ࣀ옄쁪‑腬ؠᜁ栙䂒ͥ쀻äʹ좀鑠ፀ൜Ұـ愰ʴ䘁堀斠ᵄ뽜鰃�ଠ՚䰀ι〈怜䀧ፚ저�舀郰Y馮ހ㎱्蠀
-      valueStored = lib.LZString.compress(lib.Base64.encode(JSON.stringify(data)));
+      valueStored = lib.LZString.compressToUTF16(lib.Base64.encode(JSON.stringify(data)));
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
