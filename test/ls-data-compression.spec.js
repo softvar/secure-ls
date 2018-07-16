@@ -13,7 +13,7 @@ describe('Data Compression Tests ->', () => {
   beforeEach(() => {
     mockLS.storage = {};
     lib = new SecureLS();
-    lib.ls = mockStorage;
+    lib.storage = mockStorage;
   });
 
   afterEach(() => {
@@ -27,7 +27,7 @@ describe('Data Compression Tests ->', () => {
       let key = 'key-1';
 
       lib = new SecureLS({isCompression: false});
-      lib.ls = mockStorage;
+      lib.storage = mockStorage;
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => WzEsMiwzXQ== i.e. Base64 encoded
@@ -49,7 +49,7 @@ describe('Data Compression Tests ->', () => {
       let key = 'key-1';
 
       lib = new SecureLS({encodingType: '', isCompression: false});
-      lib.ls = mockStorage;
+      lib.storage = mockStorage;
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "[1, 2, 3]"

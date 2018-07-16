@@ -126,7 +126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.config.encodingType = typeof config.encodingType !== 'undefined' || config.encodingType === '' ? config.encodingType.toLowerCase() : _constants2.default.EncrytionTypes.BASE64;
 	    this.config.encryptionSecret = config.encryptionSecret;
 	
-	    this.ls = config.storageType || localStorage;
+	    this.storage = config.storageType || localStorage;
 	    this.init();
 	  }
 	
@@ -260,7 +260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getDataFromLocalStorage',
 	    value: function getDataFromLocalStorage(key) {
-	      return this.ls.getItem(key, true);
+	      return this.storage.getItem(key, true);
 	    }
 	  }, {
 	    key: 'getAllKeys',
@@ -296,7 +296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'setDataToLocalStorage',
 	    value: function setDataToLocalStorage(key, data) {
-	      this.ls.setItem(key, data);
+	      this.storage.setItem(key, data);
 	    }
 	  }, {
 	    key: 'remove',
@@ -315,7 +315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.utils.removeFromKeysList(key);
 	        this.setMetaData();
 	      }
-	      this.ls.removeItem(key);
+	      this.storage.removeItem(key);
 	    }
 	  }, {
 	    key: 'removeAll',
@@ -325,16 +325,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      keys = this.getAllKeys();
 	      for (i = 0; i < keys.length; i++) {
-	        this.ls.removeItem(keys[i]);
+	        this.storage.removeItem(keys[i]);
 	      }
-	      this.ls.removeItem(this.utils.metaKey);
+	      this.storage.removeItem(this.utils.metaKey);
 	
 	      this.resetAllKeys();
 	    }
 	  }, {
 	    key: 'clear',
 	    value: function clear() {
-	      this.ls.clear();
+	      this.storage.clear();
 	      this.resetAllKeys();
 	    }
 	  }, {

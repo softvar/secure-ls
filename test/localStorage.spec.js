@@ -12,7 +12,7 @@ describe('LocalSorage API Tests ->', () => {
     let mockStorage = mockLS.storageMock();
 
     lib = new SecureLS();
-    lib.ls = mockStorage;
+    lib.storage = mockStorage;
   });
 
   afterEach(function() {

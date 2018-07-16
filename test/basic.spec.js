@@ -40,7 +40,7 @@ describe('Basic suites ->', () => {
       expect(lib.RABBIT).to.exist;
       expect(lib.RC4).to.exist;
       expect(lib.enc).to.exist;
-      expect(lib.ls).to.exist;
+      expect(lib.storage).to.exist;
       expect(lib.config).to.exist;
       expect(lib.config).to.be.an('object');
       expect(lib.config).to.include.keys('encodingType', 'isCompression');

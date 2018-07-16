@@ -84,6 +84,15 @@ describe('Functional tests', () => {
     });
   });
 
+  describe('Config test: storageType can be set with custom storage type', () => {
+    it('should verify mockStorage with storageType', () => {
+      const mockStorage = mockLS.storageMock();
+
+      lib = new SecureLS({storageType: mockStorage});
+      expect(lib.storage).to.equal(mockStorage);
+    });
+  });
+
   describe('processData: method', () => {
     it('should return if no data provided', () => {
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compress');
@@ -215,13 +224,6 @@ describe('Functional tests', () => {
     });
   });
 
-  describe('Config test: custom storageType', () => {
-    it('should set storage accordingly', () => {
-      const mockStorage = mockLS.storageMock();
 
-      lib = new SecureLS({storageType: mockStorage});
-      expect(lib.ls).to.equal(mockStorage);
-    });
-  });
 
 });
