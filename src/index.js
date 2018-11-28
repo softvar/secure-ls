@@ -243,7 +243,7 @@ export default class SecureLS {
   }
 
   processData(data, isAllKeysData) {
-    if (!data) {
+    if (data === null || data === undefined || data === '') {
       return '';
     }
 
