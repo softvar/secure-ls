@@ -346,7 +346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'processData',
 	    value: function processData(data, isAllKeysData) {
-	      if (!data) {
+	      if (data === null || data === undefined || data === '') {
 	        return '';
 	      }
 	
@@ -409,7 +409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = SecureLS;
 	;
-	module.exports = exports.default;
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
