@@ -1,6 +1,6 @@
 {
   "name": "secure-ls",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Secure localStorage data with high level of encryption and data compression",
   "main": "dist/secure-ls.js",
   "scripts": {
