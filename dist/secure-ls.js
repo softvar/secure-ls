@@ -180,8 +180,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.config.isCompression;
 	    }
 	  }, {
-	    key: 'getEncyptionSecret',
-	    value: function getEncyptionSecret(key) {
+	    key: 'getEncryptionSecret',
+	    value: function getEncryptionSecret(key) {
 	      var metaData = this.getMetaData() || {};
 	      var obj = this.utils.getObjectFromKey(metaData.keys, key);
 	
