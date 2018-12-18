@@ -87,7 +87,7 @@ export default class SecureLS {
     return this.config.isCompression;
   }
 
-  getEncyptionSecret(key) {
+  getEncryptionSecret(key) {
     let metaData = this.getMetaData() || {};
     let obj = this.utils.getObjectFromKey(metaData.keys, key);
 
@@ -140,7 +140,7 @@ export default class SecureLS {
     if (this._isBase64 || isAllKeysData) { // meta data always Base64
       decodedData = Base64.decode(deCompressedData);
     } else {
-      this.getEncyptionSecret(key);
+      this.getEncryptionSecret(key);
       if (this._isAES) {
         bytes = AES.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isDES) {
@@ -183,7 +183,7 @@ export default class SecureLS {
       return;
     }
 
-    this.getEncyptionSecret(key);
+    this.getEncryptionSecret(key);
 
     // add key(s) to Array if not already added, only for keys other than meta key
     if (!(String(key) === String(this.utils.metaKey))) {

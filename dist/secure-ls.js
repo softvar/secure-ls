@@ -180,8 +180,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.config.isCompression;
 	    }
 	  }, {
-	    key: 'getEncyptionSecret',
-	    value: function getEncyptionSecret(key) {
+	    key: 'getEncryptionSecret',
+	    value: function getEncryptionSecret(key) {
 	      var metaData = this.getMetaData() || {};
 	      var obj = this.utils.getObjectFromKey(metaData.keys, key);
 	
@@ -233,7 +233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // meta data always Base64
 	        decodedData = _Base2.default.decode(deCompressedData);
 	      } else {
-	        this.getEncyptionSecret(key);
+	        this.getEncryptionSecret(key);
 	        if (this._isAES) {
 	          bytes = _aes2.default.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
 	        } else if (this._isDES) {
@@ -279,7 +279,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	
-	      this.getEncyptionSecret(key);
+	      this.getEncryptionSecret(key);
 	
 	      // add key(s) to Array if not already added, only for keys other than meta key
 	      if (!(String(key) === String(this.utils.metaKey))) {
