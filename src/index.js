@@ -25,7 +25,9 @@ export default class SecureLS {
 
     this.config = {
       isCompression: true,
-      encodingType: constants.EncrytionTypes.BASE64
+      encodingType: constants.EncrytionTypes.BASE64,
+      encryptionSecret: config.encryptionSecret,
+      encryptionRealm: config.encryptionRealm
     };
     this.config.isCompression = typeof config.isCompression !== 'undefined' ?
       config.isCompression :
@@ -33,14 +35,13 @@ export default class SecureLS {
     this.config.encodingType = (typeof config.encodingType !== 'undefined' || config.encodingType === '') ?
       config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
-    this.config.encryptionSecret = config.encryptionSecret;
 
     this.ls = localStorage;
     this.init();
   };
 
   init() {
-    let metaData = this.getMetaData() || {};
+    let metaData = this.getMetaData();
 
     this.WarningEnum = this.constants.WarningEnum;
     this.WarningTypes = this.constants.WarningTypes;
@@ -88,7 +89,7 @@ export default class SecureLS {
   }
 
   getEncryptionSecret(key) {
-    let metaData = this.getMetaData() || {};
+    let metaData = this.getMetaData();
     let obj = this.utils.getObjectFromKey(metaData.keys, key);
 
     if (!obj) {
@@ -289,11 +290,15 @@ export default class SecureLS {
     }, true);
 
     // Store the data to localStorage
-    this.setDataToLocalStorage(this.utils.metaKey, dataToStore);
+    this.setDataToLocalStorage(this.getMetaKey(), dataToStore);
   };
 
   getMetaData() {
-    return this.get(this.utils.metaKey, true);
+    return this.get(this.getMetaKey(), true) || {};
   };
+
+  getMetaKey() {
+    return this.utils.metaKey + (this.config.encryptionRealm ? '__' + this.config.encryptionRealm : '');
+  }
 
 };
