@@ -404,10 +404,10 @@ describe('Encryption / Decryption Tests ->', () => {
       let key2 = 'key-2';
 
       let lib1 = new SecureLS({
-        encodingType: 'RC4', isCompression: true, encryptionSecret: secret1, encryptionRealm: realm1
+        encodingType: 'RC4', isCompression: true, encryptionSecret: secret1, encryptionNamespace: realm1
       });
       let lib2 = new SecureLS({
-        encodingType: 'RC4', isCompression: true, encryptionSecret: secret2, encryptionRealm: realm2
+        encodingType: 'RC4', isCompression: true, encryptionSecret: secret2, encryptionNamespace: realm2
       });
 
       lib1.ls = mockStorage;

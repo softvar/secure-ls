@@ -27,7 +27,7 @@ export default class SecureLS {
       isCompression: true,
       encodingType: constants.EncrytionTypes.BASE64,
       encryptionSecret: config.encryptionSecret,
-      encryptionRealm: config.encryptionRealm
+      encryptionNamespace: config.encryptionNamespace
     };
     this.config.isCompression = typeof config.isCompression !== 'undefined' ?
       config.isCompression :
@@ -298,7 +298,7 @@ export default class SecureLS {
   };
 
   getMetaKey() {
-    return this.utils.metaKey + (this.config.encryptionRealm ? '__' + this.config.encryptionRealm : '');
+    return this.utils.metaKey + (this.config.encryptionNamespace ? '__' + this.config.encryptionNamespace : '');
   }
 
 };

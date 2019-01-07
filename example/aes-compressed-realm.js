@@ -1,10 +1,10 @@
 var data = {data: [{age: 1}, {age: '2'}]};
-var aesCRealm1 = new SecureLS({encodingType: 'aes', encryptionSecret: 'secret1', encryptionRealm: 'realm1'});
+var aesCRealm1 = new SecureLS({encodingType: 'aes', encryptionSecret: 'secret1', encryptionNamespace: 'realm1'});
 var key1 = 'aes__compressed_1';
 var ae = aesCRealm1.AES.encrypt(JSON.stringify(data), '');
 var bde = aesCRealm1.AES.decrypt(ae.toString(), '');
 var de = bde.toString(aesCRealm1.enc._Utf8);
-var aesCRealm2 = new SecureLS({encodingType: 'aes', encryptionSecret: 'secret2', encryptionRealm: 'realm2'});
+var aesCRealm2 = new SecureLS({encodingType: 'aes', encryptionSecret: 'secret2', encryptionNamespace: 'realm2'});
 var key2 = 'aes__compressed_2';
 var ae2 = aesCRealm2.AES.encrypt(JSON.stringify(data), '');
 var bde2 = aesCRealm2.AES.decrypt(ae2.toString(), '');

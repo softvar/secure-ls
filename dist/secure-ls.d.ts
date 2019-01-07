@@ -1,5 +1,5 @@
 export interface SecureLS {
-    new(config?: { isCompression: boolean, encodingType: string, encryptionSecret: string , encryptionRealm: string }): SecureLS;
+    new(config?: { isCompression: boolean, encodingType: string, encryptionSecret: string , encryptionNamespace: string }): SecureLS;
     getEncryptionSecret(): string;
     get(key: string, isAllKeysData?: boolean): any;
     getDataFromLocalStorage(key: string): string | null;

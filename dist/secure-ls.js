@@ -122,7 +122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCompression: true,
 	      encodingType: _constants2.default.EncrytionTypes.BASE64,
 	      encryptionSecret: config.encryptionSecret,
-	      encryptionRealm: config.encryptionRealm
+	      encryptionNamespace: config.encryptionNamespace
 	    };
 	    this.config.isCompression = typeof config.isCompression !== 'undefined' ? config.isCompression : true;
 	    this.config.encodingType = typeof config.encodingType !== 'undefined' || config.encodingType === '' ? config.encodingType.toLowerCase() : _constants2.default.EncrytionTypes.BASE64;
@@ -406,7 +406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getMetaKey',
 	    value: function getMetaKey() {
-	      return this.utils.metaKey + (this.config.encryptionRealm ? '__' + this.config.encryptionRealm : '');
+	      return this.utils.metaKey + (this.config.encryptionNamespace ? '__' + this.config.encryptionNamespace : '');
 	    }
 	  }]);
 	
