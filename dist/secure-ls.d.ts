@@ -1,5 +1,7 @@
-export interface SecureLS {
-    new(config?: { isCompression: boolean, encodingType: string, encryptionSecret: string , encryptionNamespace: string }): SecureLS;
+export = SecureLS;
+
+declare class SecureLS {
+    constructor(config?: { isCompression?: boolean, encodingType?: string, encryptionSecret?: string , encryptionNamespace?: string });
     getEncryptionSecret(): string;
     get(key: string, isAllKeysData?: boolean): any;
     getDataFromLocalStorage(key: string): string | null;
@@ -14,3 +16,5 @@ export interface SecureLS {
     setMetaData(): void;
     getMetaData(): { keys: string[] };
 }
+
+declare namespace SecureLS{}
