@@ -1,5 +1,8 @@
 export = SecureLS;
 
+import * as LZString from 'lz-string';
+import {CipherHelper, Encoder} from 'crypto-js';
+
 declare class SecureLS {
     constructor(config?: { isCompression?: boolean, encodingType?: string, encryptionSecret?: string , encryptionNamespace?: string });
     getEncryptionSecret(): string;
@@ -15,6 +18,24 @@ declare class SecureLS {
     processData(data: any | string, isAllKeysData: boolean): string;
     setMetaData(): void;
     getMetaData(): { keys: string[] };
+
+    _name: 'secure-ls';
+    Base64: SecureLS.Base64;
+    LZString: LZString.LZStringStatic;
+    AES: CipherHelper;
+    DES: CipherHelper;
+    RABBIT: CipherHelper;
+    RC4: CipherHelper;
+    enc: {
+        Latin1: Encoder;
+        _Utf8: Encoder;
+    };
 }
 
-declare namespace SecureLS{}
+declare namespace SecureLS{
+    interface Base64 {
+        _keyStr: string;
+        encode(e: string);
+        decode(e: string);
+    }
+}
