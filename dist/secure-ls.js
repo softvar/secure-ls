@@ -120,11 +120,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    this.config = {
 	      isCompression: true,
-	      encodingType: _constants2.default.EncrytionTypes.BASE64
+	      encodingType: _constants2.default.EncrytionTypes.BASE64,
+	      encryptionSecret: config.encryptionSecret,
+	      encryptionNamespace: config.encryptionNamespace
 	    };
 	    this.config.isCompression = typeof config.isCompression !== 'undefined' ? config.isCompression : true;
 	    this.config.encodingType = typeof config.encodingType !== 'undefined' || config.encodingType === '' ? config.encodingType.toLowerCase() : _constants2.default.EncrytionTypes.BASE64;
-	    this.config.encryptionSecret = config.encryptionSecret;
 	
 	    this.ls = localStorage;
 	    this.init();
@@ -133,7 +134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(SecureLS, [{
 	    key: 'init',
 	    value: function init() {
-	      var metaData = this.getMetaData() || {};
+	      var metaData = this.getMetaData();
 	
 	      this.WarningEnum = this.constants.WarningEnum;
 	      this.WarningTypes = this.constants.WarningTypes;
@@ -182,7 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getEncryptionSecret',
 	    value: function getEncryptionSecret(key) {
-	      var metaData = this.getMetaData() || {};
+	      var metaData = this.getMetaData();
 	      var obj = this.utils.getObjectFromKey(metaData.keys, key);
 	
 	      if (!obj) {
@@ -395,12 +396,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }, true);
 	
 	      // Store the data to localStorage
-	      this.setDataToLocalStorage(this.utils.metaKey, dataToStore);
+	      this.setDataToLocalStorage(this.getMetaKey(), dataToStore);
 	    }
 	  }, {
 	    key: 'getMetaData',
 	    value: function getMetaData() {
-	      return this.get(this.utils.metaKey, true);
+	      return this.get(this.getMetaKey(), true) || {};
+	    }
+	  }, {
+	    key: 'getMetaKey',
+	    value: function getMetaKey() {
+	      return this.utils.metaKey + (this.config.encryptionNamespace ? '__' + this.config.encryptionNamespace : '');
 	    }
 	  }]);
 	

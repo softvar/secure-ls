@@ -101,7 +101,9 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠁쁺Ÿીꀜ鄈Àኀ퐁᠁肢ϙ㑀娃࠰Ⲁ찠̨ư༠ǟ踈Ÿ耀 " i.e. compressed AES encrypted
-      valueStored = lib.LZString.compressToUTF16(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(
+          lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString()
+      );
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -135,11 +137,12 @@ describe('Encryption / Decryption Tests ->', () => {
       expect(lib.utils.encryptionSecret).to.equal('mySecretKey123');
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠁쁺Ÿીꀜ鄈Àኀ퐁᠁肢ϙ㑀娃࠰Ⲁ찠̨ư༠ǟ踈Ÿ耀 " i.e. compressed AES encrypted
-      valueStored = lib.LZString.compressToUTF16(lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(
+          lib.AES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString()
+      );
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
-
 
       // Can't check exact values since CryptoJS encryption is time-dependent
       // expect(mockLS.storage[key]).to.equal(valueStored);
@@ -222,7 +225,9 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠉쁡㠓䌄倈쁺ᆰୀ䬐ʐɀ挀喠儴ݲ " i.e. compressed DES encrypted
-      valueStored = lib.LZString.compressToUTF16(lib.DES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(
+          lib.DES.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString()
+      );
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -369,7 +374,9 @@ describe('Encryption / Decryption Tests ->', () => {
       lib.set(key, data);
 
       // corresponding to [1, 2, 3] => "⪂恢ೠ☎⁪ڰځ᠍䁅̘ࡀ⡀⢀丈٠ⶀ㙸໠ވɘའ̀눂 " i.e. compressed RC4 encrypted
-      valueStored = lib.LZString.compressToUTF16(lib.RC4.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString());
+      valueStored = lib.LZString.compressToUTF16(
+          lib.RC4.encrypt(JSON.stringify(data), lib.utils.encryptionSecret).toString()
+      );
 
       expect(mockLS.storage[key]).to.exist;
       expect(mockLS.storage[key]).to.be.a('string');
@@ -382,6 +389,44 @@ describe('Encryption / Decryption Tests ->', () => {
       expect(data.toString()).to.equal(valueRetrieved.toString());
 
       lib.removeAll();
+    });
+  });
+
+  describe('AES encryption and compression and multiple storages', () => {
+    it('should have two parallel storage running at the same time', () => {
+      let data1 = [1, 2, 3];
+      let data2 = [3, 4, 5];
+      let secret1 = 'secret1';
+      let secret2 = 'secret2';
+      let realm1 = 'realm1';
+      let realm2 = 'realm2';
+      let key1 = 'key-1';
+      let key2 = 'key-2';
+
+      let lib1 = new SecureLS({
+        encodingType: 'RC4', isCompression: true, encryptionSecret: secret1, encryptionNamespace: realm1
+      });
+      let lib2 = new SecureLS({
+        encodingType: 'RC4', isCompression: true, encryptionSecret: secret2, encryptionNamespace: realm2
+      });
+
+      lib1.ls = mockStorage;
+      lib2.ls = mockStorage;
+
+      lib1.set(key1, data1);
+      lib2.set(key2, data2);
+
+      expect(lib1.get(key1)).to.eql(data1);
+      expect(lib2.get(key2)).to.eql(data2);
+
+      let error = null;
+
+      try {
+        lib1.get(key2);
+      } catch (e) {
+        error = e;
+      }
+      expect(error).to.not.eql(null);
     });
   });
 });
