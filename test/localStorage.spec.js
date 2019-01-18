@@ -8,14 +8,14 @@ chai.expect();
 describe('LocalSorage API Tests ->', () => {
   let lib;
 
-  beforeEach(function() {
+  beforeEach(function () {
     let mockStorage = mockLS.storageMock();
 
     lib = new SecureLS();
     lib.ls = mockStorage;
   });
 
-  afterEach(function() {
+  afterEach(function () {
     lib.removeAll();
   });
 

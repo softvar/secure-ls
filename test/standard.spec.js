@@ -60,12 +60,14 @@ describe('Standard SecureLS API Tests ->', () => {
   describe('secure-ls: getAllKeys method', () => {
     it('should return [] if nothing set', () => {
       let keys = lib.getAllKeys();
+
       expect(keys).to.be.an('array');
       expect(keys.length).to.equal(0);
     });
 
     it('should return keys when there are', () => {
       let keys = lib.getAllKeys();
+
       expect(keys.length).to.equal(0);
 
       lib.set('key-1');
@@ -122,8 +124,9 @@ describe('Standard SecureLS API Tests ->', () => {
     });
 
     it('should update the list of stored keys', () => {
-    let spy = sinon.spy(lib, 'setMetaData');
-    lib.set('key-1');
+      const spy = sinon.spy(lib, 'setMetaData');
+
+      lib.set('key-1');
       lib.remove('key-1');
       expect(spy).to.be.called;
     });
@@ -132,8 +135,9 @@ describe('Standard SecureLS API Tests ->', () => {
   describe('secure-ls: removeAll method', function () {
     it('verify allKeys length on removal', () => {
       let spy = sinon.spy(lib, 'getAllKeys');
+
       lib.set('key-1', {data: 'data'});
-      lib.set('key-2', [1, 2, 3])
+      lib.set('key-2', [1, 2, 3]);
 
       expect(lib.utils.allKeys.length).to.equal(2);
 

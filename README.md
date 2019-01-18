@@ -116,8 +116,16 @@ encoding method is choosen.
 `encryptionNamespace` is used to make multiple instances with different `encryptionSecret`
 and/or different `encryptionSecret` possible.
 
-    var ls1 = new SecureLS({encodingType: 'des', encryptionSecret: 'my-secret-key-1'});
-    var ls2 = new SecureLS({encodingType: 'aes', encryptionSecret: 'my-secret-key-2'});
+    var ls1 = new SecureLS({
+        encodingType: 'des',
+        encryptionSecret: 'my-secret-key-1',
+        encryptionNamespace: 'user-1'
+    });
+    var ls2 = new SecureLS({
+        encodingType: 'aes',
+        encryptionSecret: 'my-secret-key-2',
+        encryptionNamespace: 'user-2'
+    });
 
 **Examples:**
 

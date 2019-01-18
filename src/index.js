@@ -38,6 +38,19 @@ export default class SecureLS {
 
     this.ls = localStorage;
     this.init();
+
+    if (!this._isBase64 && typeof this.config.encryptionNamespace === 'undefined') {
+      this.utils.warn(this.WarningEnum.ENCRYPTION_NAMESPACE_NOT_PROVIDED);
+    }
+    if (
+        !this._isBase64 &&
+        (
+            typeof this.config.encryptionSecret === 'undefined' ||
+            !this.config.encryptionSecret.length
+        )
+    ) {
+      this.utils.warn(this.WarningEnum.INSECURE_PASSWORD);
+    }
   };
 
   init() {
@@ -88,34 +101,26 @@ export default class SecureLS {
     return this.config.isCompression;
   }
 
-  getEncryptionSecret(key) {
-    let metaData = this.getMetaData();
-    let obj = this.utils.getObjectFromKey(metaData.keys, key);
-
-    if (!obj) {
-      return;
-    }
-
-    if (this._isAES ||
-      this._isDES ||
-      this._isRabbit ||
-      this._isRC4
+  getEncryptionSecret() {
+    if (
+        this._isAES ||
+        this._isDES ||
+        this._isRabbit ||
+        this._isRC4
     ) {
       if (typeof this.config.encryptionSecret === 'undefined') {
-        this.utils.encryptionSecret = obj.s;
-
         if (!this.utils.encryptionSecret) {
-          this.utils.encryptionSecret = this.utils.generateSecretKey();
+          this.utils.encryptionSecret = '';
           this.setMetaData();
         }
       } else {
-        this.utils.encryptionSecret = this.config.encryptionSecret || obj.s || '';
+        this.utils.encryptionSecret = this.config.encryptionSecret || '';
       }
     }
   }
 
   get(key, isAllKeysData) {
-    let decodedData = '',
+    let decodedData,
       jsonData = '',
       deCompressedData,
       bytes,
@@ -138,10 +143,10 @@ export default class SecureLS {
     }
 
     decodedData = deCompressedData; // saves else
-    if (this._isBase64 || isAllKeysData) { // meta data always Base64
+    if (this._isBase64) {
       decodedData = Base64.decode(deCompressedData);
     } else {
-      this.getEncryptionSecret(key);
+      this.getEncryptionSecret();
       if (this._isAES) {
         bytes = AES.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isDES) {
@@ -171,20 +176,16 @@ export default class SecureLS {
   };
 
   getAllKeys() {
-    let data = this.getMetaData();
-
-    return this.utils.extractKeyNames(data) || [];
+    return this.getMetaData().keys || [];
   };
 
   set(key, data) {
-    let dataToStore = '';
-
     if (!this.utils.is(key)) {
       this.utils.warn(this.WarningEnum.KEY_NOT_PROVIDED);
       return;
     }
 
-    this.getEncryptionSecret(key);
+    this.getEncryptionSecret();
 
     // add key(s) to Array if not already added, only for keys other than meta key
     if (!(String(key) === String(this.utils.metaKey))) {
@@ -193,10 +194,8 @@ export default class SecureLS {
         this.setMetaData();
       }
     }
-
-    dataToStore = this.processData(data);
     // Store the data to localStorage
-    this.setDataToLocalStorage(key, dataToStore);
+    this.setDataToLocalStorage(key, this.processData(data));
   };
 
   setDataToLocalStorage(key, data) {
@@ -259,7 +258,7 @@ export default class SecureLS {
     // Encode Based on encoding type
     // If not set, default to Base64 for securing data
     encodedData = jsonData;
-    if (this._isBase64 || isAllKeysData) {
+    if (this._isBase64) {
       encodedData = Base64.encode(jsonData);
     } else {
       if (this._isAES) {
@@ -294,7 +293,7 @@ export default class SecureLS {
   };
 
   getMetaData() {
-    return this.get(this.getMetaKey(), true) || {};
+    return this.get(this.getMetaKey(), true) || {keys: []};
   };
 
   getMetaKey() {

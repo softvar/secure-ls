@@ -71,15 +71,6 @@ describe('Utils tests', () => {
       expect(console.warn.calledWith('Secure LS: Key not provided. Aborting operation!')).to.be.ok;
     });
 
-    describe('method: generateSecretKey ->', () => {
-      it('validate PBKDF2 key generated', () => {
-        let encryptionKey = lib.utils.generateSecretKey()
-
-        expect(encryptionKey).to.be.a('string');
-        expect(encryptionKey.length).to.be.above(30);
-      });
-    });
-
     describe('method: getObjectFromKey ->', () => {
       it('if no data provided, return', () => {
         let response;
@@ -120,13 +111,7 @@ describe('Utils tests', () => {
       it('should return the boolean based on key presence', () => {
         let response, key = 'name';
 
-        lib.utils.allKeys = [{
-          k: 'name',
-          test: 'case1'
-        }, {
-          k: 'age',
-          test: 'case2'
-        }];
+        lib.utils.allKeys = ['name', 'age'];
 
         response = lib.utils.isKeyPresent(key);
 
@@ -143,13 +128,7 @@ describe('Utils tests', () => {
     describe('method: removeFromKeysList ->', () => {
       it('should remove object from array if key matches', () => {
 
-        lib.utils.allKeys = [{
-          k: 'name',
-          test: 'case1'
-        }, {
-          k: 'age',
-          test: 'case2'
-        }];
+        lib.utils.allKeys = ['name', 'age'];
 
         expect(lib.utils.allKeys.length).to.equal(2);
 

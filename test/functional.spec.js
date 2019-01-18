@@ -11,10 +11,12 @@ let lib;
 
 describe('Functional tests', () => {
   beforeEach(() => {
+    sinon.spy(console, 'warn');
     lib = new SecureLS();
   });
 
   afterEach(() => {
+    console.warn.restore();
     lib.removeAll();
   });
 
@@ -31,14 +33,26 @@ describe('Functional tests', () => {
     });
   });
 
-  describe('Config test: is AES encryption', () => {
+  describe('Config test: show password usage warnings', () => {
     it('should verify encryption type with data encryption', () => {
       lib = new SecureLS({encodingType: 'aes'});
+      expect(console.warn.calledWith(`Secure LS: If no encryption namespace is provided, only
+one password per domain and local storage will be usable!`)).to.be.ok;
+      expect(console.warn.calledWith(`Secure LS: You are using an insecure password!
+Choose a strong password to encrypt your data!`)).to.be.ok;
+    });
+  });
+
+  describe('Config test: is AES encryption', () => {
+    it('should verify encryption type with data encryption', () => {
+      lib = new SecureLS({encodingType: 'aes', encryptionSecret: 'some', encryptionNamespace: 'some'});
       expect(lib._isAESEncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(true);
     });
     it('should verify encryption type with no data compression', () => {
-      lib = new SecureLS({encodingType: 'aes', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'aes', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       expect(lib._isAESEncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(false);
     });
@@ -46,12 +60,14 @@ describe('Functional tests', () => {
 
   describe('Config test: is DES encryption', () => {
     it('should verify encryption type with data encryption', () => {
-      lib = new SecureLS({encodingType: 'des'});
+      lib = new SecureLS({encodingType: 'des', encryptionSecret: 'some', encryptionNamespace: 'some'});
       expect(lib._isDESEncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(true);
     });
     it('should verify encryption type with no data compression', () => {
-      lib = new SecureLS({encodingType: 'des', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'des', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       expect(lib._isDESEncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(false);
     });
@@ -59,12 +75,14 @@ describe('Functional tests', () => {
 
   describe('Config test: is RABBIT encryption', () => {
     it('should verify encryption type with data encryption', () => {
-      lib = new SecureLS({encodingType: 'rabbit'});
+      lib = new SecureLS({encodingType: 'rabbit', encryptionSecret: 'some', encryptionNamespace: 'some'});
       expect(lib._isRabbitEncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(true);
     });
     it('should verify encryption type with no data compression', () => {
-      lib = new SecureLS({encodingType: 'rabbit', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'rabbit', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       expect(lib._isRabbitEncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(false);
     });
@@ -72,12 +90,14 @@ describe('Functional tests', () => {
 
   describe('Config test: is RC4 encryption', () => {
     it('should verify encryption type with data encryption', () => {
-      lib = new SecureLS({encodingType: 'rc4'});
+      lib = new SecureLS({encodingType: 'rc4', encryptionSecret: 'some', encryptionNamespace: 'some'});
       expect(lib._isRC4EncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(true);
     });
     it('should verify encryption type with no data compression', () => {
-      lib = new SecureLS({encodingType: 'rc4', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'rc4', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       expect(lib._isRC4EncryptionType()).to.equal(true);
       expect(lib._isDataCompressionEnabled()).to.equal(false);
     });
@@ -94,7 +114,7 @@ describe('Functional tests', () => {
     });
 
     it('should call AES encrypt if encoding is AES', () => {
-      lib = new SecureLS({encodingType: 'aes'});
+      lib = new SecureLS({encodingType: 'aes', encryptionSecret: 'some', encryptionNamespace: 'some'});
 
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnAESEncrypt = sinon.spy(lib.AES, 'encrypt');
@@ -116,7 +136,7 @@ describe('Functional tests', () => {
     });
 
     it('should call DES encrypt if encoding is DES', () => {
-      lib = new SecureLS({encodingType: 'DES'});
+      lib = new SecureLS({encodingType: 'DES', encryptionSecret: 'some', encryptionNamespace: 'some'});
 
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnDESEncrypt = sinon.spy(lib.DES, 'encrypt');
@@ -138,7 +158,7 @@ describe('Functional tests', () => {
     });
 
     it('should call RABBIT encrypt if encoding is RABBIT', () => {
-      lib = new SecureLS({encodingType: 'RABBIT'});
+      lib = new SecureLS({encodingType: 'RABBIT', encryptionSecret: 'some', encryptionNamespace: 'some'});
 
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnRABBITEncrypt = sinon.spy(lib.RABBIT, 'encrypt');
@@ -160,7 +180,7 @@ describe('Functional tests', () => {
     });
 
     it('should call RC4 encrypt if encoding is RC4', () => {
-      lib = new SecureLS({encodingType: 'RC4'});
+      lib = new SecureLS({encodingType: 'RC4', encryptionSecret: 'some', encryptionNamespace: 'some'});
 
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let spyOnRC4Encrypt = sinon.spy(lib.RC4, 'encrypt');
@@ -182,7 +202,9 @@ describe('Functional tests', () => {
     });
 
     it('should not call LZString compress if compression OFF', () => {
-      lib = new SecureLS({encodingType: 'aes', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'aes', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
 
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let data = {
@@ -198,7 +220,9 @@ describe('Functional tests', () => {
     });
 
     it('should call LZString compress if compression in ON', () => {
-      lib = new SecureLS({encodingType: 'aes', isCompression: true});
+      lib = new SecureLS({
+        encodingType: 'aes', isCompression: true, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
 
       let spyOnLZStringCompress = sinon.spy(lib.LZString, 'compressToUTF16');
       let data = {
