@@ -26,6 +26,7 @@ declare class SecureLS {
     DES: CipherHelper;
     RABBIT: CipherHelper;
     RC4: CipherHelper;
+    ls: Storage;
     enc: {
         Latin1: Encoder;
         _Utf8: Encoder;
