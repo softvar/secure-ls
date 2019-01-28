@@ -14,7 +14,7 @@ declare class SecureLS {
     remove(key: string): void;
     removeAll(): void;
     clear(): void;
-    resetAllKeys(): [];
+    resetAllKeys(): string[];
     processData(data: any | string, isAllKeysData: boolean): string;
     setMetaData(): void;
     getMetaData(): { keys: string[] };
