@@ -122,17 +122,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCompression: true,
 	      encodingType: _constants2.default.EncrytionTypes.BASE64,
 	      encryptionSecret: config.encryptionSecret,
-	      encryptionNamespace: config.encryptionNamespace
+	      encryptionNamespace: config.encryptionNamespace,
+	      storage: config.storage || localStorage
 	    };
 	    this.config.isCompression = typeof config.isCompression !== 'undefined' ? config.isCompression : true;
 	    this.config.encodingType = typeof config.encodingType !== 'undefined' || config.encodingType === '' ? config.encodingType.toLowerCase() : _constants2.default.EncrytionTypes.BASE64;
 	
-	    this.ls = localStorage;
+	    this.ls = this.config.storage;
 	    this.init();
 	
+	    // If a serious encryption is used only one password is allowed for the local storage encryption.
+	    // To make multiple passwords possible a namespace must be set.
+	    // This notifies users that using no namespace may cause issues with multiple passwords.
 	    if (!this._isBase64 && typeof this.config.encryptionNamespace === 'undefined') {
 	      this.utils.warn(this.WarningEnum.ENCRYPTION_NAMESPACE_NOT_PROVIDED);
 	    }
+	    // If a serious encryption is wanted a user should pass a password, because the is no default secure password.
+	    // Warn the user if no password is passed
 	    if (!this._isBase64 && (typeof this.config.encryptionSecret === 'undefined' || !this.config.encryptionSecret.length)) {
 	      this.utils.warn(this.WarningEnum.INSECURE_PASSWORD);
 	    }
