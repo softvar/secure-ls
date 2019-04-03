@@ -4,7 +4,13 @@ import * as LZString from 'lz-string';
 import {CipherHelper, Encoder} from 'crypto-js';
 
 declare class SecureLS {
-    constructor(config?: { isCompression?: boolean, encodingType?: string, encryptionSecret?: string , encryptionNamespace?: string });
+    constructor(config?: {
+        isCompression?: boolean,
+        encodingType?: string,
+        encryptionSecret?: string,
+        encryptionNamespace?: string,
+        storage?: Storage
+    });
     getEncryptionSecret(): string;
     get(key: string, isAllKeysData?: boolean): any;
     getDataFromLocalStorage(key: string): string | null;
