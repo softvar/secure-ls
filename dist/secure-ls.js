@@ -147,8 +147,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(SecureLS, [{
 	    key: 'init',
 	    value: function init() {
-	      var metaData = this.getMetaData();
-	
 	      this.WarningEnum = this.constants.WarningEnum;
 	      this.WarningTypes = this.constants.WarningTypes;
 	      this.EncrytionTypes = this.constants.EncrytionTypes;
@@ -161,7 +159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this._isCompression = this._isDataCompressionEnabled();
 	
 	      // fill the already present keys to the list of keys being used by secure-ls
-	      this.utils.allKeys = metaData.keys || this.resetAllKeys();
+	      this.utils.allKeys = (this.getMetaData() || {}).keys || this.resetAllKeys();
 	    }
 	  }, {
 	    key: '_isBase64EncryptionType',

@@ -60,8 +60,6 @@ export default class SecureLS {
   };
 
   init() {
-    let metaData = this.getMetaData();
-
     this.WarningEnum = this.constants.WarningEnum;
     this.WarningTypes = this.constants.WarningTypes;
     this.EncrytionTypes = this.constants.EncrytionTypes;
@@ -74,7 +72,7 @@ export default class SecureLS {
     this._isCompression = this._isDataCompressionEnabled();
 
     // fill the already present keys to the list of keys being used by secure-ls
-    this.utils.allKeys = metaData.keys || this.resetAllKeys();
+    this.utils.allKeys = (this.getMetaData() || {}).keys || this.resetAllKeys();
   };
 
   _isBase64EncryptionType() {
