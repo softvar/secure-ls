@@ -120,11 +120,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    this.config = {
 	      isCompression: true,
-	      encodingType: _constants2.default.EncrytionTypes.BASE64
+	      encodingType: _constants2.default.EncrytionTypes.BASE64,
+	      encryptionSecret: config.encryptionSecret,
+	      encryptionNamespace: config.encryptionNamespace
 	    };
 	    this.config.isCompression = typeof config.isCompression !== 'undefined' ? config.isCompression : true;
 	    this.config.encodingType = typeof config.encodingType !== 'undefined' || config.encodingType === '' ? config.encodingType.toLowerCase() : _constants2.default.EncrytionTypes.BASE64;
-	    this.config.encryptionSecret = config.encryptionSecret;
 	
 	    this.ls = localStorage;
 	    this.init();
@@ -133,7 +134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(SecureLS, [{
 	    key: 'init',
 	    value: function init() {
-	      var metaData = this.getMetaData() || {};
+	      var metaData = this.getMetaData();
 	
 	      this.WarningEnum = this.constants.WarningEnum;
 	      this.WarningTypes = this.constants.WarningTypes;
@@ -180,9 +181,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return this.config.isCompression;
 	    }
 	  }, {
-	    key: 'getEncyptionSecret',
-	    value: function getEncyptionSecret(key) {
-	      var metaData = this.getMetaData() || {};
+	    key: 'getEncryptionSecret',
+	    value: function getEncryptionSecret(key) {
+	      var metaData = this.getMetaData();
 	      var obj = this.utils.getObjectFromKey(metaData.keys, key);
 	
 	      if (!obj) {
@@ -233,7 +234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // meta data always Base64
 	        decodedData = _Base2.default.decode(deCompressedData);
 	      } else {
-	        this.getEncyptionSecret(key);
+	        this.getEncryptionSecret(key);
 	        if (this._isAES) {
 	          bytes = _aes2.default.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
 	        } else if (this._isDES) {
@@ -279,7 +280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	
-	      this.getEncyptionSecret(key);
+	      this.getEncryptionSecret(key);
 	
 	      // add key(s) to Array if not already added, only for keys other than meta key
 	      if (!(String(key) === String(this.utils.metaKey))) {
@@ -346,7 +347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'processData',
 	    value: function processData(data, isAllKeysData) {
-	      if (!data) {
+	      if (data === null || data === undefined || data === '') {
 	        return '';
 	      }
 	
@@ -395,12 +396,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }, true);
 	
 	      // Store the data to localStorage
-	      this.setDataToLocalStorage(this.utils.metaKey, dataToStore);
+	      this.setDataToLocalStorage(this.getMetaKey(), dataToStore);
 	    }
 	  }, {
 	    key: 'getMetaData',
 	    value: function getMetaData() {
-	      return this.get(this.utils.metaKey, true);
+	      return this.get(this.getMetaKey(), true) || {};
+	    }
+	  }, {
+	    key: 'getMetaKey',
+	    value: function getMetaKey() {
+	      return this.utils.metaKey + (this.config.encryptionNamespace ? '__' + this.config.encryptionNamespace : '');
 	    }
 	  }]);
 	
@@ -409,7 +415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = SecureLS;
 	;
-	module.exports = exports.default;
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
