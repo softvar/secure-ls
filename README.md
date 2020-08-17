@@ -31,7 +31,7 @@ $ npm install secure-ls
 
   Eg: `55e8f5585789191d350329b9ebcf2b11` and `db51d35aad96610683d5a40a70b20c39`.
 
-  For the genration of such strings, `secretPhrase` is being used and can be found in code easily but that won't make it unsecure, `PBKDF2`'s layer on top of that will handle security.
+  For the generation of such strings, `secretPhrase` is being used and can be found in code easily but that won't make it unsecure, `PBKDF2`'s layer on top of that will handle security.
 
 * **Compresion / Decompression** using [lz-string](https://github.com/pieroxy/lz-string)
 
@@ -102,14 +102,22 @@ var ls = new SecureLS();
 `Contructor` accepts a configurable `Object` with all three keys being optional.
 
 
-| Config Keys           |     default    |      accepts                              |
-| --------------------- | -------------- | ----------------------------------------- |
-| **encodingType**      |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
-| **isCompression**     |     `true`     |    `true`/`false`                         |
-| **encryptionSecret**  |  PBKDF2 value  |    String                         |
+| Config Keys              |     default    |      accepts                              |
+| ------------------------ | -------------- | ----------------------------------------- |
+| **encodingType**         |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
+| **isCompression**        |     `true`     |    `true`/`false`                         |
+| **encryptionSecret**     |  PBKDF2 value  |    String                                 |
+| **encryptionNamespace**  |      null      |    String                                 |
 
-**Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64 encoding method is choosen.
+**Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data
+with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64
+encoding method is choosen.
 
+`encryptionNamespace` is used to make multiple instances with different `encryptionSecret`
+and/or different `encryptionSecret` possible.
+
+    var ls1 = new SecureLS({encodingType: 'des', encryptionSecret: 'my-secret-key-1'});
+    var ls2 = new SecureLS({encodingType: 'aes', encryptionSecret: 'my-secret-key-2'});
 
 **Examples:**
 

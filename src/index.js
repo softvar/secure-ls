@@ -25,7 +25,9 @@ export default class SecureLS {
 
     this.config = {
       isCompression: true,
-      encodingType: constants.EncrytionTypes.BASE64
+      encodingType: constants.EncrytionTypes.BASE64,
+      encryptionSecret: config.encryptionSecret,
+      encryptionNamespace: config.encryptionNamespace
     };
     this.config.isCompression = typeof config.isCompression !== 'undefined' ?
       config.isCompression :
@@ -33,14 +35,13 @@ export default class SecureLS {
     this.config.encodingType = (typeof config.encodingType !== 'undefined' || config.encodingType === '') ?
       config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
-    this.config.encryptionSecret = config.encryptionSecret;
 
     this.ls = localStorage;
     this.init();
   };
 
   init() {
-    let metaData = this.getMetaData() || {};
+    let metaData = this.getMetaData();
 
     this.WarningEnum = this.constants.WarningEnum;
     this.WarningTypes = this.constants.WarningTypes;
@@ -87,8 +88,8 @@ export default class SecureLS {
     return this.config.isCompression;
   }
 
-  getEncyptionSecret(key) {
-    let metaData = this.getMetaData() || {};
+  getEncryptionSecret(key) {
+    let metaData = this.getMetaData();
     let obj = this.utils.getObjectFromKey(metaData.keys, key);
 
     if (!obj) {
@@ -140,7 +141,7 @@ export default class SecureLS {
     if (this._isBase64 || isAllKeysData) { // meta data always Base64
       decodedData = Base64.decode(deCompressedData);
     } else {
-      this.getEncyptionSecret(key);
+      this.getEncryptionSecret(key);
       if (this._isAES) {
         bytes = AES.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isDES) {
@@ -183,7 +184,7 @@ export default class SecureLS {
       return;
     }
 
-    this.getEncyptionSecret(key);
+    this.getEncryptionSecret(key);
 
     // add key(s) to Array if not already added, only for keys other than meta key
     if (!(String(key) === String(this.utils.metaKey))) {
@@ -243,7 +244,7 @@ export default class SecureLS {
   }
 
   processData(data, isAllKeysData) {
-    if (!data) {
+    if (data === null || data === undefined || data === '') {
       return '';
     }
 
@@ -289,11 +290,15 @@ export default class SecureLS {
     }, true);
 
     // Store the data to localStorage
-    this.setDataToLocalStorage(this.utils.metaKey, dataToStore);
+    this.setDataToLocalStorage(this.getMetaKey(), dataToStore);
   };
 
   getMetaData() {
-    return this.get(this.utils.metaKey, true);
+    return this.get(this.getMetaKey(), true) || {};
   };
+
+  getMetaKey() {
+    return this.utils.metaKey + (this.config.encryptionNamespace ? '__' + this.config.encryptionNamespace : '');
+  }
 
 };

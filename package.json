@@ -1,8 +1,9 @@
 {
   "name": "secure-ls",
-  "version": "1.2.0",
+  "version": "1.2.6",
   "description": "Secure localStorage data with high level of encryption and data compression",
-  "main": "dist/secure-ls.js",
+  "main": "./dist/secure-ls.js",
+  "typings": "./dist/secure-ls.d.ts",
   "scripts": {
     "build": "webpack --mode=build",
     "build-dev": "webpack --mode=dev",
@@ -13,6 +14,8 @@
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "devDependencies": {
+    "@types/crypto-js": "^3.1.43",
+    "@types/lz-string": "^1.3.32",
     "babel": "6.3.13",
     "babel-core": "6.1.18",
     "babel-eslint": "5.0.0",
