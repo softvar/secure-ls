@@ -42,8 +42,8 @@ declare class SecureLS {
 declare namespace SecureLS{
     interface Base64 {
         _keyStr: string;
-        encode(e: string);
-        decode(e: string);
+        encode(e: string): string;
+        decode(e: string): string;
     }
     interface Storage {
         readonly length: number;
