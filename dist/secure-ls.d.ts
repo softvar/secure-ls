@@ -9,7 +9,7 @@ declare class SecureLS {
         encodingType?: string,
         encryptionSecret?: string,
         encryptionNamespace?: string,
-        storage?: Storage
+        storage?: SecureLS.Storage
     });
     getEncryptionSecret(): string;
     get(key: string, isAllKeysData?: boolean): any;
@@ -32,7 +32,7 @@ declare class SecureLS {
     DES: CipherHelper;
     RABBIT: CipherHelper;
     RC4: CipherHelper;
-    ls: Storage;
+    ls: SecureLS.Storage;
     enc: {
         Latin1: Encoder;
         _Utf8: Encoder;
@@ -44,5 +44,14 @@ declare namespace SecureLS{
         _keyStr: string;
         encode(e: string);
         decode(e: string);
+    }
+    interface Storage {
+        readonly length: number;
+        clear(): void;
+        getItem(key: string): string | null;
+        key(index: number): string | null;
+        removeItem(key: string): void;
+        setItem(key: string, value: string): void;
+        [name: string]: any;
     }
 }
