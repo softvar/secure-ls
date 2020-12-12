@@ -70,7 +70,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'aes', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'aes', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -96,7 +98,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'aes', isCompression: true});
+      lib = new SecureLS({
+        encodingType: 'aes', isCompression: true, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -128,7 +132,8 @@ describe('Encryption / Decryption Tests ->', () => {
       lib = new SecureLS({
         encodingType: 'aes',
         isCompression: true,
-        encryptionSecret: 'mySecretKey123'
+        encryptionSecret: 'mySecretKey123',
+        encryptionNamespace: 'some'
       });
       lib.ls = mockStorage;
       lib.set(key, data);
@@ -161,7 +166,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'DES', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'DES', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -190,7 +197,8 @@ describe('Encryption / Decryption Tests ->', () => {
       lib = new SecureLS({
         encodingType: 'DES',
         isCompression: false,
-        encryptionSecret: 'mySecretKey123'
+        encryptionSecret: 'mySecretKey123',
+        encryptionNamespace: 'some'
       });
       lib.ls = mockStorage;
       lib.set(key, data);
@@ -220,7 +228,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'DES', isCompression: true});
+      lib = new SecureLS({
+        encodingType: 'DES', isCompression: true, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -249,7 +259,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'RABBIT', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'RABBIT', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -275,7 +287,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'RABBIT', isCompression: true});
+      lib = new SecureLS({
+        encodingType: 'RABBIT', isCompression: true, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -307,7 +321,8 @@ describe('Encryption / Decryption Tests ->', () => {
       lib = new SecureLS({
         encodingType: 'RABBIT',
         isCompression: true,
-        encryptionSecret: ''
+        encryptionSecret: '',
+        encryptionNamespace: 'some'
       });
       lib.ls = mockStorage;
       lib.set(key, data);
@@ -343,7 +358,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'RC4', isCompression: false});
+      lib = new SecureLS({
+        encodingType: 'RC4', isCompression: false, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 
@@ -369,7 +386,9 @@ describe('Encryption / Decryption Tests ->', () => {
       let data = [1, 2, 3];
       let key = 'key-1';
 
-      lib = new SecureLS({encodingType: 'RC4', isCompression: true});
+      lib = new SecureLS({
+        encodingType: 'RC4', isCompression: true, encryptionSecret: 'some', encryptionNamespace: 'some'
+      });
       lib.ls = mockStorage;
       lib.set(key, data);
 

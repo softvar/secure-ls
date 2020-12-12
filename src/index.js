@@ -27,7 +27,8 @@ export default class SecureLS {
       isCompression: true,
       encodingType: constants.EncrytionTypes.BASE64,
       encryptionSecret: config.encryptionSecret,
-      encryptionNamespace: config.encryptionNamespace
+      encryptionNamespace: config.encryptionNamespace,
+      storage: config.storage || localStorage
     };
     this.config.isCompression = typeof config.isCompression !== 'undefined' ?
       config.isCompression :
@@ -36,13 +37,29 @@ export default class SecureLS {
       config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
 
-    this.ls = localStorage;
+    this.ls = this.config.storage;
     this.init();
+
+    // If a serious encryption is used only one password is allowed for the local storage encryption.
+    // To make multiple passwords possible a namespace must be set.
+    // This notifies users that using no namespace may cause issues with multiple passwords.
+    if (!this._isBase64 && typeof this.config.encryptionNamespace === 'undefined') {
+      this.utils.warn(this.WarningEnum.ENCRYPTION_NAMESPACE_NOT_PROVIDED);
+    }
+    // If a serious encryption is wanted a user should pass a password, because the is no default secure password.
+    // Warn the user if no password is passed
+    if (
+        !this._isBase64 &&
+        (
+            typeof this.config.encryptionSecret === 'undefined' ||
+            !this.config.encryptionSecret.length
+        )
+    ) {
+      this.utils.warn(this.WarningEnum.INSECURE_PASSWORD);
+    }
   };
 
   init() {
-    let metaData = this.getMetaData();
-
     this.WarningEnum = this.constants.WarningEnum;
     this.WarningTypes = this.constants.WarningTypes;
     this.EncrytionTypes = this.constants.EncrytionTypes;
@@ -55,7 +72,7 @@ export default class SecureLS {
     this._isCompression = this._isDataCompressionEnabled();
 
     // fill the already present keys to the list of keys being used by secure-ls
-    this.utils.allKeys = metaData.keys || this.resetAllKeys();
+    this.utils.allKeys = (this.getMetaData() || {}).keys || this.resetAllKeys();
   };
 
   _isBase64EncryptionType() {
@@ -88,34 +105,26 @@ export default class SecureLS {
     return this.config.isCompression;
   }
 
-  getEncryptionSecret(key) {
-    let metaData = this.getMetaData();
-    let obj = this.utils.getObjectFromKey(metaData.keys, key);
-
-    if (!obj) {
-      return;
-    }
-
-    if (this._isAES ||
-      this._isDES ||
-      this._isRabbit ||
-      this._isRC4
+  getEncryptionSecret() {
+    if (
+        this._isAES ||
+        this._isDES ||
+        this._isRabbit ||
+        this._isRC4
     ) {
       if (typeof this.config.encryptionSecret === 'undefined') {
-        this.utils.encryptionSecret = obj.s;
-
         if (!this.utils.encryptionSecret) {
-          this.utils.encryptionSecret = this.utils.generateSecretKey();
+          this.utils.encryptionSecret = '';
           this.setMetaData();
         }
       } else {
-        this.utils.encryptionSecret = this.config.encryptionSecret || obj.s || '';
+        this.utils.encryptionSecret = this.config.encryptionSecret || '';
       }
     }
   }
 
   get(key, isAllKeysData) {
-    let decodedData = '',
+    let decodedData,
       jsonData = '',
       deCompressedData,
       bytes,
@@ -138,10 +147,10 @@ export default class SecureLS {
     }
 
     decodedData = deCompressedData; // saves else
-    if (this._isBase64 || isAllKeysData) { // meta data always Base64
+    if (this._isBase64) {
       decodedData = Base64.decode(deCompressedData);
     } else {
-      this.getEncryptionSecret(key);
+      this.getEncryptionSecret();
       if (this._isAES) {
         bytes = AES.decrypt(deCompressedData.toString(), this.utils.encryptionSecret);
       } else if (this._isDES) {
@@ -171,20 +180,16 @@ export default class SecureLS {
   };
 
   getAllKeys() {
-    let data = this.getMetaData();
-
-    return this.utils.extractKeyNames(data) || [];
+    return this.getMetaData().keys || [];
   };
 
   set(key, data) {
-    let dataToStore = '';
-
     if (!this.utils.is(key)) {
       this.utils.warn(this.WarningEnum.KEY_NOT_PROVIDED);
       return;
     }
 
-    this.getEncryptionSecret(key);
+    this.getEncryptionSecret();
 
     // add key(s) to Array if not already added, only for keys other than meta key
     if (!(String(key) === String(this.utils.metaKey))) {
@@ -193,10 +198,8 @@ export default class SecureLS {
         this.setMetaData();
       }
     }
-
-    dataToStore = this.processData(data);
     // Store the data to localStorage
-    this.setDataToLocalStorage(key, dataToStore);
+    this.setDataToLocalStorage(key, this.processData(data));
   };
 
   setDataToLocalStorage(key, data) {
@@ -259,7 +262,7 @@ export default class SecureLS {
     // Encode Based on encoding type
     // If not set, default to Base64 for securing data
     encodedData = jsonData;
-    if (this._isBase64 || isAllKeysData) {
+    if (this._isBase64) {
       encodedData = Base64.encode(jsonData);
     } else {
       if (this._isAES) {
@@ -294,7 +297,7 @@ export default class SecureLS {
   };
 
   getMetaData() {
-    return this.get(this.getMetaKey(), true) || {};
+    return this.get(this.getMetaKey(), true) || {keys: []};
   };
 
   getMetaKey() {

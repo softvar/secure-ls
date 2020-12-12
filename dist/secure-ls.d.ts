@@ -4,7 +4,13 @@ import * as LZString from 'lz-string';
 import {CipherHelper, Encoder} from 'crypto-js';
 
 declare class SecureLS {
-    constructor(config?: { isCompression?: boolean, encodingType?: string, encryptionSecret?: string , encryptionNamespace?: string });
+    constructor(config?: {
+        isCompression?: boolean,
+        encodingType?: string,
+        encryptionSecret?: string,
+        encryptionNamespace?: string,
+        storage?: SecureLS.Storage
+    });
     getEncryptionSecret(): string;
     get(key: string, isAllKeysData?: boolean): any;
     getDataFromLocalStorage(key: string): string | null;
@@ -14,7 +20,7 @@ declare class SecureLS {
     remove(key: string): void;
     removeAll(): void;
     clear(): void;
-    resetAllKeys(): [];
+    resetAllKeys(): string[];
     processData(data: any | string, isAllKeysData: boolean): string;
     setMetaData(): void;
     getMetaData(): { keys: string[] };
@@ -26,6 +32,7 @@ declare class SecureLS {
     DES: CipherHelper;
     RABBIT: CipherHelper;
     RC4: CipherHelper;
+    ls: SecureLS.Storage;
     enc: {
         Latin1: Encoder;
         _Utf8: Encoder;
@@ -37,5 +44,14 @@ declare namespace SecureLS{
         _keyStr: string;
         encode(e: string): string;
         decode(e: string): string;
+    }
+    interface Storage {
+        readonly length: number;
+        clear(): void;
+        getItem(key: string): string | null;
+        key(index: number): string | null;
+        removeItem(key: string): void;
+        setItem(key: string, value: string): void;
+        [name: string]: any;
     }
 }

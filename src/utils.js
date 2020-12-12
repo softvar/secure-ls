@@ -1,6 +1,4 @@
 import constants from './constants';
-import CryptoJSWordArray from './WordArray';
-import PBKDF2 from 'crypto-js/pbkdf2';
 
 let utils = {
   metaKey: '_secure__ls__metadata',
@@ -16,12 +14,6 @@ let utils = {
   warn: function (reason) {
     reason = reason ? reason : constants.WarningEnum.DEFAULT_TEXT;
     console.warn(constants.WarningTypes[reason]);
-  },
-  generateSecretKey: function () {
-    let salt = CryptoJSWordArray.random(128 / 8);
-    let key128Bits = PBKDF2(this.secretPhrase, salt, {keySize: 128 / 32 });
-
-    return key128Bits && key128Bits.toString();
   },
   getObjectFromKey: function (data, key) {
     if (!data || !data.length) {
@@ -39,15 +31,6 @@ let utils = {
 
     return obj;
   },
-  extractKeyNames: function (data) {
-    if (!data || !data.keys || !data.keys.length) {
-      return [];
-    }
-
-    return data.keys.map(keyData => {
-      return keyData.k;
-    });
-  },
   getAllKeys: function () {
     return this.allKeys;
   },
@@ -55,7 +38,7 @@ let utils = {
     let isKeyAlreadyPresent = false;
 
     for (let i = 0; i < this.allKeys.length; i++) {
-      if (String(this.allKeys[i].k) === String(key)) {
+      if (String(this.allKeys[i]) === String(key)) {
         isKeyAlreadyPresent = true; // found
         break;
       }
@@ -64,16 +47,13 @@ let utils = {
     return isKeyAlreadyPresent;
   },
   addToKeysList: function (key) {
-    this.allKeys.push({
-      k: key,
-      s: this.encryptionSecret
-    });
+    this.allKeys.push(key);
   },
   removeFromKeysList: function (key) {
     let i, index = -1;
 
     for (i = 0; i < this.allKeys.length; i++) {
-      if (this.allKeys[i].k === key) {
+      if (this.allKeys[i] === key) {
         index = i;
         break;
       }
