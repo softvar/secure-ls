@@ -1,3 +1,4 @@
+import root from 'window-or-global';
 import utils from './utils';
 import constants from './constants';
 import enc from './enc-utf8';
@@ -8,6 +9,13 @@ import AES from 'crypto-js/aes';
 import DES from 'crypto-js/tripledes';
 import RABBIT from 'crypto-js/rabbit';
 import RC4 from 'crypto-js/rc4';
+
+const globalStorage = {
+  setItem: () => {},
+  getItem: () => {},
+  removeItem: () => {},
+  clear: () => {}
+};
 
 export default class SecureLS {
   constructor(config) {
@@ -36,7 +44,7 @@ export default class SecureLS {
       config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
 
-    this.ls = localStorage;
+    this.ls = root.localStorage || globalStorage;
     this.init();
   };
 
