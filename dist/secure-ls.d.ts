@@ -1,4 +1,4 @@
-export = SecureLS;
+
 
 import * as LZString from 'lz-string';
 import {CipherHelper, Encoder} from 'crypto-js';
@@ -39,3 +39,5 @@ declare namespace SecureLS{
         decode(e: string): string;
     }
 }
+    
+export default SecureLS ;
