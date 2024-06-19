@@ -1,0 +1,4 @@
+yarn check:license
+yarn lint
+yarn test:prod
+yarn build
