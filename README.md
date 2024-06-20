@@ -2,9 +2,10 @@
 
 Secure localStorage/sessionStorage data with high level of encryption and data compression.
 
-[![npm version](https://img.shields.io/npm/v/secure-ls?style=for-the-badge&color=grey&logo=npm)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg)](https://www.npmjs.com/package/secure-ls)
+[![npm version](https://img.shields.io/npm/v/secure-ls?style=for-the-badge&color=grey&logo=npm)](https://www.npmjs.com/package/secure-ls) [![npm](https://img.shields.io/npm/dt/secure-ls.svg?style=for-the-badge&color=blue)](https://www.npmjs.com/package/secure-ls)
 
-[![Build Status](http://img.shields.io/travis/softvar/secure-ls/master.svg?style=flat)](http://travis-ci.org/softvar/secure-ls) [![Coverage Status](https://coveralls.io/repos/github/softvar/secure-ls/badge.svg?branch=master)](https://coveralls.io/github/softvar/secure-ls?branch=master)
+[![CI](https://img.shields.io/github/actions/workflow/status/softvar/secure-ls/test.yml?style=for-the-badge&logo=github)](https://github.com/softvar/secure-ls/actions?query=workflow%3ACI)
+[![codecov](https://img.shields.io/codecov/c/github/softvar/secure-ls?token=HxMmlpGn3k&style=for-the-badge&logo=codecov)](https://codecov.io/gh/softvar/secure-ls)
 
 **[LIVE DEMO](http://softvar.github.io/secure-ls#live-demo)**
 
