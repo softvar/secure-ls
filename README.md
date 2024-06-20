@@ -113,12 +113,14 @@ const ls = new SecureLS();
 
 `Contructor` accepts a configurable `Object` with all three keys being optional.
 
-| Config Keys             | default      | accepts                                  |
-| ----------------------- | ------------ | ---------------------------------------- |
-| **encodingType**        | Base64       | `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
-| **isCompression**       | `true`       | `true`/`false`                           |
-| **encryptionSecret**    | PBKDF2 value | String                                   |
-| **encryptionNamespace** | null         | String                                   |
+| Config Keys             | default                 | accepts                                                                        |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------------------ |
+| **encodingType**        | Base64                  | `base64`/`aes`/`des`/`rabbit`/`rc4`/`''`                                       |
+| **isCompression**       | `true`                  | `true`/`false`                                                                 |
+| **encryptionSecret**    | PBKDF2 value            | String                                                                         |
+| **encryptionNamespace** | null                    | String                                                                         |
+| **storage**             | localStorage            | sessionStorage/localStorage or any storage object having same methods as ls/ss |
+| **metaKey**             | `_secure__ls__metadata` | String                                                                         |
 
 **Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data
 with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64
@@ -172,6 +174,36 @@ const ls = new SecureLS({ encodingType: 'rc4', isCompression: false });
 ```javascript
 const ls = new SecureLS({ encodingType: 'rc4', isCompression: false, encryptionSecret: 's3cr3tPa$$w0rd@123' });
 ```
+
+- Any other **storage** apart from localStorage
+
+  - Using `sessionStorage`
+
+    ```javascript
+    const ls = new SecureLS({ encodingType: 'aes', isCompression: true, storage: sessionStorage });
+    ```
+
+  - Using any storage having same methods as `localStorage/sessionStorage`
+
+    ```javascript
+    window.customSecureLsStore = {};
+    const storage = {
+      setItem: (key, value) => {
+        window.customSecureLsStore[key] = value || '';
+      },
+      getItem: (key) => {
+        return window.customSecureLsStore[key] || null;
+      },
+      removeItem: (key) => {
+        delete window.customSecureLsStore[key];
+      },
+      clear: () => {
+        window.customSecureLsStore = {};
+      },
+    };
+
+    const ls = new SecureLS({ encodingType: 'aes', isCompression: true, storage: storage });
+    ```
 
 #### Methods
 
